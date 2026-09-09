@@ -150,15 +150,40 @@ label{
   margin-bottom:9px;
 }
 
-.food strong{
+/* NOUVEAU : en-tête de chaque aliment */
+.food-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+}
+
+.food-title{
+  flex:1;
+  min-width:0;
+}
+
+.food-title strong{
   display:block;
   font-size:16px;
 }
 
-.food > small{
+.food-title small{
   display:block;
   margin-top:4px;
   color:#69727b;
+}
+
+/* NOUVEAU : bouton X de suppression */
+.food-delete{
+  flex:0 0 auto !important;
+  width:36px !important;
+  min-height:36px !important;
+  height:36px !important;
+  padding:0 !important;
+  border-radius:10px !important;
+  font-size:17px !important;
+  line-height:36px;
 }
 
 .food-actions{
@@ -379,7 +404,6 @@ hr{
 
 <main>
 
-  <!-- JOUR -->
   <section class="card">
     <h2>📅 Aujourd'hui</h2>
 
@@ -407,7 +431,6 @@ hr{
   </section>
 
 
-  <!-- REPAS -->
   <section class="card">
     <h2>🍽️ Mes repas</h2>
 
@@ -417,7 +440,6 @@ hr{
   </section>
 
 
-  <!-- AJOUT -->
   <section class="card">
     <h2>➕ Ajouter un aliment</h2>
 
@@ -430,7 +452,6 @@ hr{
   </section>
 
 
-  <!-- ALIMENTS -->
   <section class="card" id="foodsSection">
     <h2>🥗 Aliments</h2>
 
@@ -461,7 +482,6 @@ hr{
   </section>
 
 
-  <!-- TEF -->
   <section class="card">
     <h2>🔥 TEF</h2>
 
@@ -493,7 +513,6 @@ hr{
   </section>
 
 
-  <!-- BMR -->
   <section class="card">
     <h2>🧮 Métabolisme de base</h2>
 
@@ -533,7 +552,6 @@ hr{
   </section>
 
 
-  <!-- ACTIVITÉ -->
   <section class="card">
     <h2>⌚ Activité</h2>
 
@@ -556,7 +574,6 @@ hr{
   </section>
 
 
-  <!-- BILAN -->
   <section class="card">
     <h2>⚖️ Bilan énergétique</h2>
 
@@ -568,7 +585,6 @@ hr{
   </section>
 
 
-  <!-- POIDS -->
   <section class="card">
     <h2>⚖️ Suivi du poids</h2>
 
@@ -598,7 +614,6 @@ hr{
 </main>
 
 
-<!-- MODAL RECHERCHE -->
 <div class="modal" id="searchModal">
   <div class="modal-box">
 
@@ -628,7 +643,6 @@ hr{
 </div>
 
 
-<!-- MODAL MANUEL -->
 <div class="modal" id="manualModal">
   <div class="modal-box">
 
@@ -682,7 +696,6 @@ hr{
 </div>
 
 
-<!-- MODAL QUANTITÉ -->
 <div class="modal" id="quantityModal">
   <div class="modal-box">
 
@@ -704,7 +717,6 @@ hr{
 </div>
 
 
-<!-- SCANNER -->
 <div class="modal" id="scannerModal">
   <div class="modal-box">
 
@@ -750,10 +762,6 @@ hr{
 
 <script>
 
-/* =========================================================
-   CONFIGURATION
-========================================================= */
-
 const STORAGE_KEY = "energyLedgerV2";
 const FOOD_BASE_VERSION = 3;
 
@@ -763,13 +771,7 @@ const SPOON_GRAMS = {
 };
 
 
-/* =========================================================
-   BASE ALIMENTAIRE
-========================================================= */
-
 const baseFoods = [
-
-  /* LÉGUMES & LÉGUMINEUSES */
 
   {
     name:"Haricots verts",
@@ -841,9 +843,6 @@ const baseFoods = [
     f:0.3
   },
 
-
-  /* FRUITS */
-
   {
     name:"Banane",
     cat:"Fruits",
@@ -913,9 +912,6 @@ const baseFoods = [
     c:13.8,
     f:0.2
   },
-
-
-  /* PROTÉINES */
 
   {
     name:"Poulet blanc",
@@ -1029,9 +1025,6 @@ const baseFoods = [
     f:23
   },
 
-
-  /* GLUCIDES */
-
   {
     name:"Pâtes sèches",
     cat:"Glucides / féculents",
@@ -1093,9 +1086,6 @@ const baseFoods = [
     f:4.2
   },
 
-
-  /* MATIÈRES GRASSES */
-
   {
     name:"Huile d’olive",
     cat:"Matières grasses & oméga-3",
@@ -1126,9 +1116,6 @@ const baseFoods = [
     cUnit:0,
     fUnit:0.9
   },
-
-
-  /* LAITIERS */
 
   {
     name:"Fromage blanc 0%",
@@ -1202,9 +1189,6 @@ const baseFoods = [
     c:7,
     f:17
   },
-
-
-  /* SAUCES & CONDIMENTS */
 
   {
     name:"Mayonnaise",
@@ -1287,9 +1271,6 @@ const baseFoods = [
     fUnit:0.6
   },
 
-
-  /* CONFISERIE */
-
   {
     name:"Bonbons pâte à mâcher",
     cat:"Confiserie",
@@ -1328,63 +1309,147 @@ const defaultState = {
     height:170,
     weight:70
   },
-  foodBaseVersion:0
+  foodBaseVersion:0,
+
+  /* NOUVEAU :
+     mémorise les aliments de base supprimés */
+  deletedFoodNames:[]
 };
 
 
 let S = loadState();
 
+
+/* =========================================================
+   CHARGEMENT DES DONNÉES
+========================================================= */
+
+/*
+  Cette fonction ajoute les aliments de base manquants
+  sans écraser les aliments déjà présents.
+
+  Un aliment qui a été supprimé est ignoré.
+*/
+function ensureBaseFoodsOnState(state){
+
+  state.deletedFoodNames =
+    Array.isArray(state.deletedFoodNames)
+      ? state.deletedFoodNames
+      : [];
+
+  state.foods =
+    Array.isArray(state.foods)
+      ? state.foods
+      : [];
+
+
+  baseFoods.forEach(base=>{
+
+    if(
+      state.deletedFoodNames.includes(base.name)
+    ){
+
+      return;
+    }
+
+
+    const exists=
+      state.foods.some(
+        f=>f.name===base.name
+      );
+
+
+    if(!exists){
+
+      state.foods.push(
+        JSON.parse(
+          JSON.stringify(base)
+        )
+      );
+
+    }
+
+  });
+
+
+  state.foodBaseVersion=
+    FOOD_BASE_VERSION;
+}
+
+
 function loadState(){
 
   try{
 
-    const raw=localStorage.getItem(STORAGE_KEY);
+    const raw=
+      localStorage.getItem(
+        STORAGE_KEY
+      );
+
 
     if(!raw){
 
-      const fresh=JSON.parse(JSON.stringify(defaultState));
+      const fresh=
+        JSON.parse(
+          JSON.stringify(defaultState)
+        );
 
-      fresh.foods=JSON.parse(JSON.stringify(baseFoods));
-      fresh.foodBaseVersion=FOOD_BASE_VERSION;
+
+      ensureBaseFoodsOnState(fresh);
+
 
       localStorage.setItem(
         STORAGE_KEY,
         JSON.stringify(fresh)
       );
 
+
       return fresh;
     }
 
-    const parsed=JSON.parse(raw);
 
-    if(parsed.foodBaseVersion !== FOOD_BASE_VERSION){
+    const parsed=
+      JSON.parse(raw);
 
-      parsed.foods=JSON.parse(JSON.stringify(baseFoods));
-      parsed.foodBaseVersion=FOOD_BASE_VERSION;
 
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(parsed)
-      );
-    }
+    const state={
 
-    return {
       ...defaultState,
+
       ...parsed,
+
       profile:{
         ...defaultState.profile,
         ...(parsed.profile || {})
-      }
+      },
+
+      deletedFoodNames:
+        Array.isArray(parsed.deletedFoodNames)
+          ? parsed.deletedFoodNames
+          : []
+
     };
+
+
+    ensureBaseFoodsOnState(state);
+
+
+    return state;
+
 
   }catch(e){
 
     console.error(e);
 
-    const fresh=JSON.parse(JSON.stringify(defaultState));
 
-    fresh.foods=JSON.parse(JSON.stringify(baseFoods));
-    fresh.foodBaseVersion=FOOD_BASE_VERSION;
+    const fresh=
+      JSON.parse(
+        JSON.stringify(defaultState)
+      );
+
+
+    ensureBaseFoodsOnState(fresh);
+
 
     return fresh;
   }
@@ -1392,6 +1457,7 @@ function loadState(){
 
 
 function save(){
+
   localStorage.setItem(
     STORAGE_KEY,
     JSON.stringify(S)
@@ -1419,7 +1485,9 @@ function fmt(n){
 
   if(!Number.isFinite(Number(n))) return "0";
 
-  return Number(n).toFixed(1).replace(".0","");
+  return Number(n)
+    .toFixed(1)
+    .replace(".0","");
 }
 
 
@@ -1428,6 +1496,17 @@ function escapeQuotes(str){
   return String(str)
     .replace(/\\/g,"\\\\")
     .replace(/'/g,"\\'");
+}
+
+
+function escapeHTML(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 }
 
 
@@ -1440,34 +1519,108 @@ function getFood(name){
 
 
 /* =========================================================
+   NOUVEAU : SAVOIR SI C'EST UN ALIMENT DE LA BASE
+========================================================= */
+
+function isBaseFood(name){
+
+  return baseFoods.some(
+    f=>f.name===name
+  );
+}
+
+
+/* =========================================================
+   NOUVEAU : SUPPRIMER UN ALIMENT
+========================================================= */
+
+function deleteFood(name){
+
+  const food=getFood(name);
+
+  if(!food)return;
+
+
+  const ok=
+    confirm(
+      `Supprimer « ${name} » de tes aliments ?`
+    );
+
+
+  if(!ok)return;
+
+
+  /*
+    Si c'est un aliment fourni dans la base,
+    on mémorise sa suppression pour qu'il
+    ne réapparaisse pas après actualisation.
+  */
+  if(
+    isBaseFood(name) &&
+    !S.deletedFoodNames.includes(name)
+  ){
+
+    S.deletedFoodNames.push(name);
+
+  }
+
+
+  /*
+    On supprime uniquement l'aliment de la liste.
+    Les repas déjà enregistrés restent inchangés.
+  */
+  S.foods=
+    S.foods.filter(
+      f=>f.name!==name
+    );
+
+
+  save();
+
+  renderFoods();
+}
+
+
+/* =========================================================
    ALIMENTS
 ========================================================= */
 
 function renderFoods(){
 
-  const search=document
-    .getElementById("foodSearch")
-    .value
-    .toLowerCase()
-    .trim();
+  const search=
+    document
+      .getElementById("foodSearch")
+      .value
+      .toLowerCase()
+      .trim();
 
-  const cat=document
-    .getElementById("foodCategory")
-    .value;
 
-  const box=document.getElementById("foodList");
+  const cat=
+    document
+      .getElementById("foodCategory")
+      .value;
+
+
+  const box=
+    document.getElementById(
+      "foodList"
+    );
+
 
   box.innerHTML="";
 
-  const foods=S.foods.filter(f=>{
 
-    return f.name
-      .toLowerCase()
-      .includes(search)
-      &&
-      (!cat || f.cat===cat);
+  const foods=
+    S.foods.filter(f=>{
 
-  });
+      return f.name
+        .toLowerCase()
+        .includes(search)
+        &&
+        (!cat || f.cat===cat);
+
+    });
+
 
   if(!foods.length){
 
@@ -1477,30 +1630,40 @@ function renderFoods(){
     return;
   }
 
+
   const grouped={};
+
 
   foods.forEach(f=>{
 
     if(!grouped[f.cat]){
+
       grouped[f.cat]=[];
+
     }
 
     grouped[f.cat].push(f);
+
   });
 
 
   Object.keys(grouped).forEach(category=>{
 
-    const h=document.createElement("h3");
+    const h=
+      document.createElement("h3");
+
 
     h.textContent=category;
+
 
     box.appendChild(h);
 
 
     grouped[category].forEach(f=>{
 
-      const div=document.createElement("div");
+      const div=
+        document.createElement("div");
+
 
       div.className="food";
 
@@ -1509,18 +1672,42 @@ function renderFoods(){
 
         div.innerHTML=`
 
-          <strong>${f.name}</strong>
+          <div class="food-header">
 
-          <small>
-            ${fmt(f.kcalUnit)} kcal / ${f.unitName}
-            • ${fmt(f.pUnit)} g protéines
-          </small>
+            <div class="food-title">
+
+              <strong>
+                ${escapeHTML(f.name)}
+              </strong>
+
+              <small>
+                ${fmt(f.kcalUnit)} kcal / ${escapeHTML(f.unitName)}
+                • ${fmt(f.pUnit)} g protéines
+              </small>
+
+            </div>
+
+
+            <button
+              class="danger food-delete"
+              onclick="deleteFood('${escapeQuotes(f.name)}')"
+              title="Supprimer cet aliment">
+
+              ✕
+
+            </button>
+
+          </div>
+
 
           <div class="food-actions">
 
-            <button class="secondary"
+            <button
+              class="secondary"
               onclick="addFood('${escapeQuotes(f.name)}')">
+
               Ajouter
+
             </button>
 
           </div>
@@ -1531,40 +1718,70 @@ function renderFoods(){
 
         div.innerHTML=`
 
-          <strong>${f.name}</strong>
+          <div class="food-header">
 
-          <small>
-            ${fmt(f.kcal)} kcal / 100 g
-            • ${fmt(f.p)} g protéines
-          </small>
+            <div class="food-title">
+
+              <strong>
+                ${escapeHTML(f.name)}
+              </strong>
+
+              <small>
+                ${fmt(f.kcal)} kcal / 100 g
+                • ${fmt(f.p)} g protéines
+              </small>
+
+            </div>
+
+
+            <button
+              class="danger food-delete"
+              onclick="deleteFood('${escapeQuotes(f.name)}')"
+              title="Supprimer cet aliment">
+
+              ✕
+
+            </button>
+
+          </div>
+
 
           <div class="spoon-actions">
 
-            <button class="secondary"
+            <button
+              class="secondary"
               onclick="addFoodBySpoon(
                 '${escapeQuotes(f.name)}',
                 'teaspoon'
               )">
 
               🥄 Café
-              <small>8 g</small>
+
+              <small>
+                8 g
+              </small>
 
             </button>
 
 
-            <button class="secondary"
+            <button
+              class="secondary"
               onclick="addFoodBySpoon(
                 '${escapeQuotes(f.name)}',
                 'tablespoon'
               )">
 
               🥄 Soupe
-              <small>22 g</small>
+
+              <small>
+                22 g
+              </small>
 
             </button>
 
 
-            <button class="secondary"
+            <button
+              class="secondary"
               onclick="addFoodByGram(
                 '${escapeQuotes(f.name)}'
               )">
@@ -1576,7 +1793,9 @@ function renderFoods(){
           </div>
 
         `;
+
       }
+
 
       box.appendChild(div);
 
@@ -1623,6 +1842,7 @@ function addFoodByGram(name){
 
   if(!food)return;
 
+
   if(food.type!=="100g"){
 
     alert(
@@ -1631,6 +1851,7 @@ function addFoodByGram(name){
 
     return;
   }
+
 
   openQuantityModal(
     food,
@@ -1646,6 +1867,7 @@ function addFoodBySpoon(name,mode){
 
   if(!food)return;
 
+
   if(food.type!=="100g"){
 
     alert(
@@ -1655,7 +1877,10 @@ function addFoodBySpoon(name,mode){
     return;
   }
 
-  const grams=SPOON_GRAMS[mode];
+
+  const grams=
+    SPOON_GRAMS[mode];
+
 
   const label=
     mode==="teaspoon"
@@ -1743,11 +1968,12 @@ function confirmQuantity(){
   if(!pendingFood)return;
 
 
-  let quantity=Number(
-    document.getElementById(
-      "quantityInput"
-    ).value
-  );
+  let quantity=
+    Number(
+      document.getElementById(
+        "quantityInput"
+      ).value
+    );
 
 
   if(
@@ -1790,7 +2016,9 @@ function confirmQuantity(){
   );
 
 
-  closeModal("quantityModal");
+  closeModal(
+    "quantityModal"
+  );
 
 
   pendingFood=null;
@@ -1832,6 +2060,7 @@ function addFoodEntry(
 
     const factor=
       Number(grams)/100;
+
 
     kcal=
       Number(food.kcal || 0) *
@@ -1915,6 +2144,7 @@ function renderMeals(){
     const div=
       document.createElement("div");
 
+
     div.className="meal-item";
 
 
@@ -1940,7 +2170,7 @@ function renderMeals(){
 
       <div class="meal-info">
 
-        <strong>${m.food}</strong>
+        <strong>${escapeHTML(m.food)}</strong>
 
         <span class="muted">
           ${quantityText}
@@ -1967,7 +2197,9 @@ function renderMeals(){
       <button
         class="danger"
         onclick="removeMeal(${index})">
+
         ✕
+
       </button>
 
     `;
@@ -1986,7 +2218,10 @@ function removeMeal(index){
       m=>m.date===today()
     );
 
-  const target=meals[index];
+
+  const target=
+    meals[index];
+
 
   if(!target)return;
 
@@ -2027,10 +2262,17 @@ function getTodayMacros(){
 
     (acc,m)=>{
 
-      acc.kcal+=Number(m.kcal)||0;
-      acc.p+=Number(m.p)||0;
-      acc.c+=Number(m.c)||0;
-      acc.f+=Number(m.f)||0;
+      acc.kcal+=
+        Number(m.kcal)||0;
+
+      acc.p+=
+        Number(m.p)||0;
+
+      acc.c+=
+        Number(m.c)||0;
+
+      acc.f+=
+        Number(m.f)||0;
 
       return acc;
 
@@ -2161,10 +2403,23 @@ function calculateBMR(){
 
 
   if(p.sex==="male"){
-    return 10*p.weight + 6.25*p.height - 5*p.age + 5;
+
+    return(
+      10*p.weight +
+      6.25*p.height -
+      5*p.age +
+      5
+    );
+
   }
 
-  return 10*p.weight + 6.25*p.height - 5*p.age - 161;
+
+  return(
+    10*p.weight +
+    6.25*p.height -
+    5*p.age -
+    161
+  );
 }
 
 
@@ -2239,7 +2494,9 @@ function saveProfile(){
     !weight
   ){
 
-    alert("Vérifie les informations du profil.");
+    alert(
+      "Vérifie les informations du profil."
+    );
 
     return;
   }
@@ -2296,7 +2553,9 @@ function saveActivity(){
     value<0
   ){
 
-    alert("Valeur invalide.");
+    alert(
+      "Valeur invalide."
+    );
 
     return;
   }
@@ -2312,7 +2571,10 @@ function saveActivity(){
 
 function getCorrectedActivity(){
 
-  return Number(S.activity || 0) * 0.70;
+  return(
+    Number(S.activity || 0) *
+    0.70
+  );
 }
 
 
@@ -2372,6 +2634,7 @@ function renderDeficit(){
     box.classList.add(
       "surplus"
     );
+
   }
 
 
@@ -2445,16 +2708,24 @@ function renderWeight(){
       div.innerHTML=`
 
         <div>
-          <strong>${w.weight} kg</strong>
+
+          <strong>
+            ${w.weight} kg
+          </strong>
+
           <span class="muted">
             ${w.date}
           </span>
+
         </div>
+
 
         <button
           class="danger"
           onclick="deleteWeight('${w.date}')">
+
           ✕
+
         </button>
 
       `;
@@ -2491,7 +2762,9 @@ function addWeight(){
     weight<=0
   ){
 
-    alert("Vérifie la date et le poids.");
+    alert(
+      "Vérifie la date et le poids."
+    );
 
     return;
   }
@@ -2535,6 +2808,7 @@ function deleteWeight(date){
     S.weights.filter(
       w=>w.date!==date
     );
+
 
   save();
 
@@ -2990,11 +3264,6 @@ async function searchOpenFoodFacts(){
 
   try{
 
-    /*
-      L'API de recherche Open Food Facts
-      retourne les produits correspondants.
-    */
-
     const url=
       "https://world.openfoodfacts.org/cgi/search.pl"+
       "?search_terms="+
@@ -3155,17 +3424,6 @@ async function searchOpenFoodFacts(){
       `;
 
   }
-}
-
-
-function escapeHTML(value){
-
-  return String(value ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
 }
 
 
@@ -3447,6 +3705,7 @@ function closeScanner(){
         track=>track.stop()
       );
 
+
     scannerStream=null;
   }
 
@@ -3532,6 +3791,7 @@ async function searchBarcode(code){
       status.textContent=
         "Produit introuvable dans Open Food Facts.";
 
+
       alert(
         "Produit introuvable dans Open Food Facts. Tu peux l'ajouter manuellement."
       );
@@ -3604,6 +3864,7 @@ async function searchBarcode(code){
     status.textContent=
       "Erreur pendant la recherche.";
 
+
     alert(
       "Impossible de récupérer ce produit."
     );
@@ -3650,7 +3911,7 @@ document.addEventListener(
 
 
 /* =========================================================
-   FERMETURE MODALE EN CLIQUANT À L'EXTÉRIEUR
+   FERMETURE MODALE
 ========================================================= */
 
 document.querySelectorAll(
@@ -3685,7 +3946,6 @@ document.querySelectorAll(
   );
 
 });
-
 
 </script>
 
