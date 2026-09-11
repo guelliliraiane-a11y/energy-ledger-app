@@ -3,271 +3,193 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Energy Ledger</title>
+<meta name="theme-color" content="#111827">
+<title>⚡ Energy Ledger</title>
 
 <style>
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-  background:#f5f7f9;
-  color:#17212b;
+  background:#f3f4f6;
+  color:#111827;
 }
 
 header{
-  background:#17212b;
-  color:white;
-  padding:18px 16px;
   position:sticky;
   top:0;
-  z-index:10;
+  z-index:100;
+  background:#111827;
+  color:white;
+  padding:18px 16px 16px;
+  box-shadow:0 2px 10px rgba(0,0,0,.15);
 }
 
 header h1{
   margin:0;
-  font-size:24px;
+  font-size:25px;
 }
 
 header p{
   margin:5px 0 0;
-  opacity:.75;
-  font-size:13px;
+  color:#d1d5db;
+  font-size:14px;
 }
 
+/* =========================
+   ONGLETS
+========================= */
+
+.tabs{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding:10px 12px;
+  background:white;
+  border-bottom:1px solid #e5e7eb;
+  scrollbar-width:none;
+}
+
+.tabs::-webkit-scrollbar{
+  display:none;
+}
+
+.tab-button{
+  flex:0 0 auto;
+  min-width:105px;
+  border:1px solid #d1d5db;
+  background:#f9fafb;
+  color:#374151;
+  border-radius:12px;
+  padding:11px 13px;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+  white-space:nowrap;
+}
+
+.tab-button.active{
+  background:#2563eb;
+  color:white;
+  border-color:#2563eb;
+}
+
+.tab-panel{
+  display:none;
+}
+
+.tab-panel.active{
+  display:block;
+}
+
+/* =========================
+   CONTENU
+========================= */
+
 main{
-  max-width:700px;
+  max-width:900px;
   margin:auto;
-  padding:15px;
+  padding:16px;
 }
 
 .card{
   background:white;
-  border-radius:18px;
-  padding:16px;
-  margin-bottom:14px;
-  box-shadow:0 3px 14px rgba(0,0,0,.06);
+  border-radius:16px;
+  padding:18px;
+  margin-bottom:16px;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
 }
 
-h2{
-  margin:0 0 13px;
+.card h2{
+  margin:0 0 14px;
   font-size:20px;
 }
 
-h3{
-  margin:18px 0 8px;
+.card h3{
+  margin:18px 0 10px;
   font-size:16px;
 }
 
-button{
-  border:0;
-  border-radius:12px;
-  min-height:48px;
-  padding:10px 14px;
-  font-weight:600;
-  cursor:pointer;
-  background:#17212b;
-  color:white;
+.muted{
+  color:#6b7280;
+  font-size:14px;
 }
 
-button:active{
-  transform:scale(.98);
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
 }
 
-button.secondary{
-  background:#eef1f4;
-  color:#17212b;
+.stat{
+  background:#f9fafb;
+  border:1px solid #e5e7eb;
+  border-radius:13px;
+  padding:14px;
 }
 
-button.danger{
-  background:#ffe8e8;
-  color:#b42318;
+.stat strong{
+  display:block;
+  font-size:23px;
+  margin-top:4px;
 }
 
-button.success{
-  background:#e7f7ed;
-  color:#18794e;
+label{
+  display:block;
+  font-weight:700;
+  margin-bottom:6px;
+  font-size:14px;
 }
 
 input,
 select{
   width:100%;
-  min-height:46px;
-  border:1px solid #d7dde3;
-  border-radius:11px;
+  min-height:44px;
+  border:1px solid #d1d5db;
+  border-radius:10px;
   padding:10px 12px;
   font-size:16px;
   background:white;
 }
 
-label{
-  display:block;
-  font-size:13px;
-  font-weight:600;
-  margin:10px 0 5px;
+button{
+  min-height:44px;
+  border:0;
+  border-radius:10px;
+  padding:10px 14px;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
 }
 
-.grid{
+.btn{
+  background:#2563eb;
+  color:white;
+}
+
+.btn-secondary{
+  background:#e5e7eb;
+  color:#111827;
+}
+
+.btn-danger{
+  background:#dc2626;
+  color:white;
+}
+
+.form-grid{
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
 }
 
-.muted{
-  color:#69727b;
-  font-size:13px;
+.form-group{
+  margin-bottom:10px;
 }
 
-.big{
-  font-size:28px;
-  font-weight:800;
-}
-
-.balance{
-  padding:14px;
-  border-radius:14px;
-  background:#f1f4f6;
-  margin-top:10px;
-}
-
-.balance.deficit{
-  background:#e8f7ed;
-  color:#18794e;
-}
-
-.balance.surplus{
-  background:#fff0ee;
-  color:#b42318;
-}
-
-.food{
-  background:#fafbfc;
-  border:1px solid #e5e9ed;
-  border-radius:14px;
-  padding:13px;
-  margin-bottom:9px;
-}
-
-/* NOUVEAU : en-tête de chaque aliment */
-.food-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:10px;
-}
-
-.food-title{
-  flex:1;
-  min-width:0;
-}
-
-.food-title strong{
-  display:block;
-  font-size:16px;
-}
-
-.food-title small{
-  display:block;
-  margin-top:4px;
-  color:#69727b;
-}
-
-/* NOUVEAU : bouton X de suppression */
-.food-delete{
-  flex:0 0 auto !important;
-  width:36px !important;
-  min-height:36px !important;
-  height:36px !important;
-  padding:0 !important;
-  border-radius:10px !important;
-  font-size:17px !important;
-  line-height:36px;
-}
-
-.food-actions{
-  display:flex;
-  gap:7px;
-  margin-top:10px;
-}
-
-.food-actions button{
-  flex:1;
-}
-
-.spoon-actions{
-  display:flex;
-  gap:7px;
-  margin-top:10px;
-}
-
-.spoon-actions button{
-  flex:1;
-  min-height:52px;
-  padding:6px 4px;
-  font-size:12px;
-}
-
-.spoon-actions small{
-  display:block;
-  color:#69727b;
-  margin-top:2px;
-}
-
-.meal-item{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  align-items:center;
-  padding:11px 0;
-  border-bottom:1px solid #edf0f2;
-}
-
-.meal-item:last-child{
-  border-bottom:0;
-}
-
-.meal-info{
-  flex:1;
-}
-
-.meal-info strong{
-  display:block;
-}
-
-.meal-macros{
-  text-align:right;
-  white-space:nowrap;
-}
-
-.meal-macros strong{
-  display:block;
-}
-
-.stats{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:7px;
-}
-
-.stat{
-  background:#f4f6f8;
-  border-radius:12px;
-  padding:9px 5px;
-  text-align:center;
-}
-
-.stat strong{
-  display:block;
-  font-size:16px;
-}
-
-.stat span{
-  display:block;
-  color:#69727b;
-  font-size:11px;
-  margin-top:2px;
+.full{
+  grid-column:1 / -1;
 }
 
 .search-row{
@@ -279,117 +201,291 @@ label{
   flex:1;
 }
 
-.search-row button{
-  width:auto;
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:12px;
 }
 
-.action-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:9px;
+/* =========================
+   ALIMENTS
+========================= */
+
+.food-card{
+  border:1px solid #e5e7eb;
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:10px;
+  background:#fff;
 }
 
-.action-grid button{
-  width:100%;
+.food-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
 }
+
+.food-title{
+  font-weight:800;
+  font-size:16px;
+}
+
+.food-info{
+  color:#6b7280;
+  font-size:13px;
+  margin-top:4px;
+}
+
+.food-delete{
+  background:#fee2e2;
+  color:#b91c1c;
+  min-width:38px;
+  padding:7px 10px;
+}
+
+.food-macros{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:10px;
+}
+
+.macro{
+  background:#f3f4f6;
+  border-radius:8px;
+  padding:5px 8px;
+  font-size:12px;
+}
+
+.food-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-top:10px;
+}
+
+.food-actions button{
+  background:#eff6ff;
+  color:#1d4ed8;
+  border:1px solid #bfdbfe;
+  font-size:13px;
+}
+
+.category-title{
+  margin:20px 0 10px;
+  font-size:17px;
+}
+
+/* =========================
+   REPAS
+========================= */
+
+.meal-card{
+  border:1px solid #e5e7eb;
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:12px;
+}
+
+.meal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+.meal-head h3{
+  margin:0;
+}
+
+.meal-food{
+  padding:8px 0;
+  border-bottom:1px solid #f0f0f0;
+}
+
+.meal-food:last-child{
+  border-bottom:0;
+}
+
+.meal-total{
+  margin-top:10px;
+  padding-top:10px;
+  border-top:1px solid #e5e7eb;
+  font-weight:800;
+}
+
+.empty{
+  padding:20px;
+  text-align:center;
+  color:#6b7280;
+  background:#f9fafb;
+  border-radius:12px;
+}
+
+/* =========================
+   MODALES
+========================= */
 
 .modal{
+  display:none;
   position:fixed;
   inset:0;
+  z-index:200;
   background:rgba(0,0,0,.55);
-  display:none;
-  align-items:flex-end;
-  justify-content:center;
-  z-index:100;
+  padding:18px;
+  overflow:auto;
 }
 
-.modal.open{
+.modal.show{
   display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
 .modal-box{
-  background:white;
   width:100%;
-  max-width:700px;
-  border-radius:22px 22px 0 0;
-  padding:18px;
+  max-width:600px;
+  background:white;
+  border-radius:18px;
+  padding:20px;
   max-height:90vh;
   overflow:auto;
 }
 
-.modal-header{
+.modal-head{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:12px;
+  gap:10px;
 }
 
-.modal-header h2{
+.modal-head h2{
   margin:0;
 }
 
-.result{
-  border:1px solid #e2e6ea;
-  border-radius:13px;
-  padding:12px;
-  margin-bottom:8px;
-  background:#fff;
+.close{
+  background:#e5e7eb;
+  width:42px;
+  min-width:42px;
+  padding:8px;
 }
 
-.result strong{
-  display:block;
-}
-
-.result small{
-  display:block;
-  color:#69727b;
-  margin:4px 0 9px;
-}
-
-.camera-box{
-  width:100%;
-  overflow:hidden;
-  border-radius:16px;
-  background:#111;
-  margin:10px 0;
-}
+/* =========================
+   BARCODE
+========================= */
 
 #scannerVideo{
   width:100%;
+  border-radius:14px;
+  background:#111;
+  margin-top:12px;
+}
+
+.camera-box{
+  text-align:center;
+}
+
+/* =========================
+   STORE SEARCH
+========================= */
+
+.store-card{
+  border:1px solid #e5e7eb;
+  border-radius:13px;
+  padding:13px;
+  margin-top:10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+.store-card strong{
   display:block;
 }
 
-.hidden{
-  display:none !important;
+.store-card small{
+  color:#6b7280;
 }
+
+.store-card button{
+  flex-shrink:0;
+}
+
+/* =========================
+   TABLEAU
+========================= */
+
+.balance-result{
+  text-align:center;
+  padding:22px;
+  border-radius:15px;
+  background:#f9fafb;
+  margin-top:14px;
+}
+
+.balance-number{
+  font-size:34px;
+  font-weight:900;
+}
+
+.deficit{
+  color:#15803d;
+}
+
+.surplus{
+  color:#dc2626;
+}
+
+.neutral{
+  color:#374151;
+}
+
+/* =========================
+   GRAPHIQUE
+========================= */
 
 canvas{
   width:100%;
-  height:220px;
-  display:block;
+  max-height:320px;
 }
 
-hr{
-  border:0;
-  border-top:1px solid #edf0f2;
-  margin:15px 0;
-}
+/* =========================
+   MOBILE
+========================= */
 
-@media(max-width:500px){
-  .grid{
+@media(max-width:600px){
+
+  main{
+    padding:12px;
+  }
+
+  .grid,
+  .form-grid{
     grid-template-columns:1fr;
   }
 
-  .stats{
-    grid-template-columns:repeat(2,1fr);
+  .full{
+    grid-column:auto;
   }
 
-  .spoon-actions{
-    gap:5px;
+  .search-row{
+    flex-direction:column;
   }
 
-  .spoon-actions button{
-    font-size:11px;
+  .store-card{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .store-card button{
+    width:100%;
+  }
+
+  .tab-button{
+    min-width:100px;
   }
 }
 </style>
@@ -398,228 +494,621 @@ hr{
 <body>
 
 <header>
-  <h1>Energy Ledger</h1>
-  <p>Ton suivi nutritionnel quotidien</p>
+  <h1>⚡ Energy Ledger</h1>
+  <p>Calories · nutrition · activité · poids</p>
 </header>
+
+<!-- =========================
+     ONGLETS
+========================= -->
+
+<nav class="tabs">
+
+  <button class="tab-button active"
+          data-tab="tab-repas"
+          onclick="showTab('tab-repas')">
+    🍽️ Repas
+  </button>
+
+  <button class="tab-button"
+          data-tab="tab-tef"
+          onclick="showTab('tab-tef')">
+    🔥 TEF
+  </button>
+
+  <button class="tab-button"
+          data-tab="tab-sport"
+          onclick="showTab('tab-sport')">
+    🏃 Sport
+  </button>
+
+  <button class="tab-button"
+          data-tab="tab-poids"
+          onclick="showTab('tab-poids')">
+    ⚖️ Poids
+  </button>
+
+  <button class="tab-button"
+          data-tab="tab-balance"
+          onclick="showTab('tab-balance')">
+    📊 Balance
+  </button>
+
+</nav>
 
 <main>
 
+<!-- =====================================================
+     ONGLET REPAS
+===================================================== -->
+
+<section id="tab-repas" class="tab-panel active">
+
+  <!-- RÉSUMÉ -->
+
   <section class="card">
+
     <h2>📅 Aujourd'hui</h2>
 
-    <div class="stats">
+    <div class="grid">
+
       <div class="stat">
-        <strong id="totalKcal">0</strong>
-        <span>kcal</span>
+        <span class="muted">Calories</span>
+        <strong id="todayCalories">0 kcal</strong>
       </div>
 
       <div class="stat">
-        <strong id="totalProtein">0 g</strong>
-        <span>protéines</span>
+        <span class="muted">Protéines</span>
+        <strong id="todayProtein">0 g</strong>
       </div>
 
       <div class="stat">
-        <strong id="totalCarbs">0 g</strong>
-        <span>glucides</span>
+        <span class="muted">Glucides</span>
+        <strong id="todayCarbs">0 g</strong>
       </div>
 
       <div class="stat">
-        <strong id="totalFat">0 g</strong>
-        <span>lipides</span>
+        <span class="muted">Lipides</span>
+        <strong id="todayFat">0 g</strong>
       </div>
+
     </div>
+
   </section>
 
 
+  <!-- REPAS -->
+
   <section class="card">
+
     <h2>🍽️ Mes repas</h2>
 
-    <div id="mealList">
-      <p class="muted">Aucun aliment aujourd'hui.</p>
+    <div class="actions">
+
+      <button class="btn"
+              onclick="addMeal()">
+        ➕ Ajouter un repas
+      </button>
+
     </div>
+
+    <div id="mealsList"></div>
+
   </section>
 
 
+  <!-- AJOUT ALIMENT -->
+
   <section class="card">
+
     <h2>➕ Ajouter un aliment</h2>
 
-    <div class="action-grid">
-      <button onclick="openManualModal()">✍️ Manuel</button>
-      <button onclick="openSearchModal()">🔎 Recherche</button>
-      <button onclick="openScanner()">📷 Scanner</button>
-      <button class="secondary" onclick="scrollToFoods()">📋 Mes aliments</button>
+    <div class="actions">
+
+      <button class="btn"
+              onclick="openFoodSearch()">
+        🔎 Open Food Facts
+      </button>
+
+      <button class="btn-secondary"
+              onclick="openManualFood()">
+        ✏️ Créer manuellement
+      </button>
+
+      <button class="btn-secondary"
+              onclick="openScanner()">
+        📷 Scanner
+      </button>
+
     </div>
+
   </section>
 
 
-  <section class="card" id="foodsSection">
-    <h2>🥗 Aliments</h2>
-
-    <div class="search-row">
-      <input
-        id="foodSearch"
-        type="search"
-        placeholder="Rechercher un aliment..."
-        oninput="renderFoods()"
-      >
-    </div>
-
-    <label>Catégorie</label>
-
-    <select id="foodCategory" onchange="renderFoods()">
-      <option value="">Toutes les catégories</option>
-      <option value="Protéines">Protéines</option>
-      <option value="Laitiers">Laitiers</option>
-      <option value="Sauces & condiments">Sauces & condiments</option>
-      <option value="Confiserie">Confiserie</option>
-      <option value="Légumes & légumineuses">Légumes & légumineuses</option>
-      <option value="Fruits">Fruits</option>
-      <option value="Glucides / féculents">Glucides / féculents</option>
-      <option value="Matières grasses & oméga-3">Matières grasses & oméga-3</option>
-    </select>
-
-    <div id="foodList"></div>
-  </section>
-
+  <!-- RECHERCHE MAGASINS -->
 
   <section class="card">
-    <h2>🔥 TEF</h2>
+
+    <h2>🛒 Chercher un aliment en magasin</h2>
 
     <p class="muted">
-      Effet thermique des aliments selon tes macros.
+      Recherche rapidement le produit chez Carrefour, Auchan ou E.Leclerc.
     </p>
 
-    <div class="stats">
-      <div class="stat">
-        <strong id="tefProtein">0</strong>
-        <span>prot.</span>
-      </div>
+    <div class="search-row">
 
-      <div class="stat">
-        <strong id="tefCarbs">0</strong>
-        <span>gluc.</span>
-      </div>
+      <input
+        id="storeSearchInput"
+        type="search"
+        placeholder="Ex : fromage blanc 0%, banane..."
+      >
 
-      <div class="stat">
-        <strong id="tefFat">0</strong>
-        <span>lip.</span>
-      </div>
+      <button class="btn"
+              onclick="searchStores()">
+        Chercher
+      </button>
 
-      <div class="stat">
-        <strong id="tefTotal">0</strong>
-        <span>TEF kcal</span>
-      </div>
     </div>
+
+    <div id="storeSearchResults"></div>
+
   </section>
 
 
+  <!-- LISTE ALIMENTS -->
+
   <section class="card">
-    <h2>🧮 Métabolisme de base</h2>
+
+    <h2>🥗 Aliments</h2>
+
+    <div class="form-group">
+
+      <label for="foodFilter">
+        Rechercher
+      </label>
+
+      <input
+        id="foodFilter"
+        type="search"
+        placeholder="Ex : poulet, riz, banane..."
+        oninput="renderFoods()"
+      >
+
+    </div>
+
+    <div class="form-group">
+
+      <label for="categoryFilter">
+        Catégorie
+      </label>
+
+      <select id="categoryFilter"
+              onchange="renderFoods()">
+
+        <option value="">Toutes les catégories</option>
+        <option value="Protéines">Protéines</option>
+        <option value="Laitiers">Laitiers</option>
+        <option value="Sauces">Sauces</option>
+        <option value="Confiseries">Confiseries</option>
+        <option value="Légumes">Légumes</option>
+        <option value="Fruits">Fruits</option>
+        <option value="Féculents">Féculents</option>
+        <option value="Matières grasses">Matières grasses & oméga-3</option>
+        <option value="Autres">Autres</option>
+
+      </select>
+
+    </div>
+
+    <div id="foodsList"></div>
+
+  </section>
+
+</section>
+
+
+<!-- =====================================================
+     ONGLET TEF
+===================================================== -->
+
+<section id="tab-tef" class="tab-panel">
+
+  <section class="card">
+
+    <h2>🔥 Effet thermique des aliments — TEF</h2>
+
+    <p class="muted">
+      Le TEF estime l'énergie utilisée par l'organisme pour digérer,
+      absorber et métaboliser les macronutriments.
+    </p>
 
     <div class="grid">
-      <div>
-        <label>Sexe</label>
-        <select id="profileSex">
-          <option value="female">Femme</option>
-          <option value="male">Homme</option>
-        </select>
+
+      <div class="stat">
+        <span class="muted">Protéines</span>
+        <strong id="tefProtein">0 kcal</strong>
+        <small>25 %</small>
       </div>
 
-      <div>
-        <label>Âge</label>
-        <input id="profileAge" type="number">
+      <div class="stat">
+        <span class="muted">Glucides</span>
+        <strong id="tefCarbs">0 kcal</strong>
+        <small>7,5 %</small>
       </div>
 
-      <div>
-        <label>Taille (cm)</label>
-        <input id="profileHeight" type="number">
+      <div class="stat">
+        <span class="muted">Lipides</span>
+        <strong id="tefFat">0 kcal</strong>
+        <small>2 %</small>
       </div>
 
-      <div>
-        <label>Poids (kg)</label>
-        <input id="profileWeight" type="number" step="0.1">
+      <div class="stat">
+        <span class="muted">TEF total</span>
+        <strong id="tefTotal">0 kcal</strong>
       </div>
+
     </div>
 
-    <br>
-
-    <button onclick="saveProfile()">Enregistrer le profil</button>
-
-    <div class="balance">
-      <span class="muted">BMR</span>
-      <div class="big" id="bmrValue">0 kcal</div>
-    </div>
   </section>
 
+</section>
+
+
+<!-- =====================================================
+     ONGLET SPORT
+===================================================== -->
+
+<section id="tab-sport" class="tab-panel">
 
   <section class="card">
-    <h2>⌚ Activité</h2>
+
+    <h2>🏃 Activité / Sport</h2>
 
     <p class="muted">
       Entre les calories actives indiquées par ton Apple Watch.
-      L'application conserve 70 % de cette valeur.
+      Energy Ledger conserve 70 % de cette valeur.
     </p>
 
-    <label>Calories actives Apple Watch</label>
-    <input id="activityInput" type="number" min="0" placeholder="Ex : 500">
+    <div class="form-group">
 
-    <br><br>
+      <label for="activityCalories">
+        Calories actives Apple Watch
+      </label>
 
-    <button onclick="saveActivity()">Enregistrer</button>
+      <input
+        id="activityCalories"
+        type="number"
+        min="0"
+        step="1"
+        placeholder="Ex : 500"
+      >
 
-    <div class="balance">
-      <span class="muted">Activité retenue</span>
-      <div class="big" id="activityValue">0 kcal</div>
     </div>
+
+    <button class="btn"
+            onclick="saveActivity()">
+      💾 Enregistrer l'activité
+    </button>
+
+    <div class="grid" style="margin-top:15px">
+
+      <div class="stat">
+
+        <span class="muted">
+          Apple Watch
+        </span>
+
+        <strong id="activityRaw">
+          0 kcal
+        </strong>
+
+      </div>
+
+      <div class="stat">
+
+        <span class="muted">
+          Retenu dans le bilan
+        </span>
+
+        <strong id="activityCorrected">
+          0 kcal
+        </strong>
+
+      </div>
+
+    </div>
+
   </section>
 
 
   <section class="card">
-    <h2>⚖️ Bilan énergétique</h2>
 
-    <div id="deficitBox" class="balance">
-      <span class="muted">Bilan</span>
-      <div class="big" id="deficitValue">0 kcal</div>
-      <p id="deficitDetails" class="muted"></p>
-    </div>
+    <h2>ℹ️ Correction activité</h2>
+
+    <p>
+      Calories retenues =
+      <strong>calories actives × 70 %</strong>
+    </p>
+
+    <p class="muted">
+      Exemple : 500 kcal actives → 350 kcal comptabilisées.
+    </p>
+
   </section>
 
+</section>
+
+
+<!-- =====================================================
+     ONGLET POIDS
+===================================================== -->
+
+<section id="tab-poids" class="tab-panel">
 
   <section class="card">
+
     <h2>⚖️ Suivi du poids</h2>
 
-    <div class="grid">
-      <div>
-        <label>Date</label>
-        <input id="weightDate" type="date">
+    <div class="form-grid">
+
+      <div class="form-group">
+
+        <label for="weightDate">
+          Date
+        </label>
+
+        <input
+          id="weightDate"
+          type="date"
+        >
+
       </div>
 
-      <div>
-        <label>Poids (kg)</label>
-        <input id="weightInput" type="number" step="0.1">
+      <div class="form-group">
+
+        <label for="weightValue">
+          Poids
+        </label>
+
+        <input
+          id="weightValue"
+          type="number"
+          min="0"
+          step="0.1"
+          placeholder="64.5"
+        >
+
       </div>
+
     </div>
 
-    <br>
+    <button class="btn"
+            onclick="saveWeight()">
+      💾 Enregistrer le poids
+    </button>
 
-    <button onclick="addWeight()">Ajouter</button>
+  </section>
 
-    <hr>
+
+  <section class="card">
+
+    <h2>📈 Évolution</h2>
+
+    <canvas id="weightChart"
+            width="800"
+            height="350">
+    </canvas>
+
+  </section>
+
+
+  <section class="card">
+
+    <h2>📋 Historique</h2>
 
     <div id="weightHistory"></div>
 
-    <canvas id="weightChart"></canvas>
   </section>
+
+</section>
+
+
+<!-- =====================================================
+     ONGLET BALANCE
+===================================================== -->
+
+<section id="tab-balance" class="tab-panel">
+
+  <section class="card">
+
+    <h2>⚙️ Métabolisme de base</h2>
+
+    <div class="form-grid">
+
+      <div class="form-group">
+
+        <label for="profileWeight">
+          Poids (kg)
+        </label>
+
+        <input
+          id="profileWeight"
+          type="number"
+          step="0.1"
+          min="0"
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="profileHeight">
+          Taille (cm)
+        </label>
+
+        <input
+          id="profileHeight"
+          type="number"
+          min="0"
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="profileAge">
+          Âge
+        </label>
+
+        <input
+          id="profileAge"
+          type="number"
+          min="1"
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="profileSex">
+          Sexe
+        </label>
+
+        <select id="profileSex">
+
+          <option value="H">
+            Homme
+          </option>
+
+          <option value="F">
+            Femme
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+    <button class="btn"
+            onclick="saveProfile()">
+      💾 Enregistrer le profil
+    </button>
+
+    <div class="balance-result">
+
+      <div class="muted">
+        Métabolisme de base
+      </div>
+
+      <div class="balance-number">
+        <span id="bmrValue">0</span> kcal
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <section class="card">
+
+    <h2>📊 Balance énergétique</h2>
+
+    <div class="grid">
+
+      <div class="stat">
+
+        <span class="muted">
+          Calories consommées
+        </span>
+
+        <strong id="balanceConsumed">
+          0 kcal
+        </strong>
+
+      </div>
+
+      <div class="stat">
+
+        <span class="muted">
+          Métabolisme de base
+        </span>
+
+        <strong id="balanceBmr">
+          0 kcal
+        </strong>
+
+      </div>
+
+      <div class="stat">
+
+        <span class="muted">
+          Activité retenue
+        </span>
+
+        <strong id="balanceActivity">
+          0 kcal
+        </strong>
+
+      </div>
+
+      <div class="stat">
+
+        <span class="muted">
+          TEF
+        </span>
+
+        <strong id="balanceTef">
+          0 kcal
+        </strong>
+
+      </div>
+
+    </div>
+
+    <div class="balance-result">
+
+      <div class="muted">
+        Balance du jour
+      </div>
+
+      <div id="balanceValue"
+           class="balance-number neutral">
+        0 kcal
+      </div>
+
+      <p id="balanceText"
+         class="muted">
+        Équilibre énergétique
+      </p>
+
+    </div>
+
+  </section>
+
+</section>
 
 </main>
 
 
-<div class="modal" id="searchModal">
+<!-- =====================================================
+     MODALE RECHERCHE OPEN FOOD FACTS
+===================================================== -->
+
+<div id="foodSearchModal"
+     class="modal">
+
   <div class="modal-box">
 
-    <div class="modal-header">
+    <div class="modal-head">
+
       <h2>🔎 Open Food Facts</h2>
-      <button class="secondary" onclick="closeModal('searchModal')">✕</button>
+
+      <button class="close"
+              onclick="closeModal('foodSearchModal')">
+        ✕
+      </button>
+
     </div>
 
     <p class="muted">
@@ -627,879 +1116,880 @@ hr{
     </p>
 
     <div class="search-row">
+
       <input
         id="offSearchInput"
         type="search"
         placeholder="Ex : Nutella, fromage blanc..."
       >
-      <button onclick="searchOpenFoodFacts()">Rechercher</button>
-    </div>
 
-    <br>
+      <button class="btn"
+              onclick="searchOpenFoodFacts()">
+        Chercher
+      </button>
+
+    </div>
 
     <div id="offResults"></div>
 
   </div>
+
 </div>
 
 
-<div class="modal" id="manualModal">
+<!-- =====================================================
+     MODALE ALIMENT MANUEL
+===================================================== -->
+
+<div id="manualFoodModal"
+     class="modal">
+
   <div class="modal-box">
 
-    <div class="modal-header">
-      <h2>✍️ Ajouter manuellement</h2>
-      <button class="secondary" onclick="closeModal('manualModal')">✕</button>
+    <div class="modal-head">
+
+      <h2>✏️ Créer un aliment</h2>
+
+      <button class="close"
+              onclick="closeModal('manualFoodModal')">
+        ✕
+      </button>
+
     </div>
 
-    <label>Nom</label>
-    <input id="manualName" type="text" placeholder="Ex : Yaourt maison">
+    <div class="form-grid">
 
-    <label>Catégorie</label>
-    <select id="manualCategory">
-      <option value="Protéines">Protéines</option>
-      <option value="Laitiers">Laitiers</option>
-      <option value="Sauces & condiments">Sauces & condiments</option>
-      <option value="Confiserie">Confiserie</option>
-      <option value="Légumes & légumineuses">Légumes & légumineuses</option>
-      <option value="Fruits">Fruits</option>
-      <option value="Glucides / féculents">Glucides / féculents</option>
-      <option value="Matières grasses & oméga-3">Matières grasses & oméga-3</option>
-    </select>
+      <div class="form-group full">
 
-    <label>Calories / 100 g</label>
-    <input id="manualKcal" type="number" step="0.1">
+        <label>
+          Nom
+        </label>
 
-    <div class="grid">
+        <input
+          id="manualName"
+          type="text"
+          placeholder="Nom de l'aliment"
+        >
 
-      <div>
-        <label>Protéines / 100 g</label>
-        <input id="manualProtein" type="number" step="0.1">
       </div>
 
-      <div>
-        <label>Glucides / 100 g</label>
-        <input id="manualCarbs" type="number" step="0.1">
+      <div class="form-group">
+
+        <label>
+          Marque
+        </label>
+
+        <input
+          id="manualBrand"
+          type="text"
+          placeholder="Marque"
+        >
+
       </div>
 
-      <div>
-        <label>Lipides / 100 g</label>
-        <input id="manualFat" type="number" step="0.1">
+      <div class="form-group">
+
+        <label>
+          Catégorie
+        </label>
+
+        <select id="manualCategory">
+
+          <option value="Protéines">Protéines</option>
+          <option value="Laitiers">Laitiers</option>
+          <option value="Sauces">Sauces</option>
+          <option value="Confiseries">Confiseries</option>
+          <option value="Légumes">Légumes</option>
+          <option value="Fruits">Fruits</option>
+          <option value="Féculents">Féculents</option>
+          <option value="Matières grasses">Matières grasses</option>
+          <option value="Autres">Autres</option>
+
+        </select>
+
+      </div>
+
+      <div class="form-group">
+
+        <label>
+          kcal / 100 g
+        </label>
+
+        <input
+          id="manualKcal"
+          type="number"
+          min="0"
+          step="0.1"
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label>
+          Protéines / 100 g
+        </label>
+
+        <input
+          id="manualProtein"
+          type="number"
+          min="0"
+          step="0.1"
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label>
+          Glucides / 100 g
+        </label>
+
+        <input
+          id="manualCarbs"
+          type="number"
+          min="0"
+          step="0.1"
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label>
+          Lipides / 100 g
+        </label>
+
+        <input
+          id="manualFat"
+          type="number"
+          min="0"
+          step="0.1"
+        >
+
       </div>
 
     </div>
 
-    <br>
-
-    <button onclick="createManualFood()">Créer l'aliment</button>
-
-  </div>
-</div>
-
-
-<div class="modal" id="quantityModal">
-  <div class="modal-box">
-
-    <div class="modal-header">
-      <h2 id="quantityTitle">Ajouter</h2>
-      <button class="secondary" onclick="closeModal('quantityModal')">✕</button>
-    </div>
-
-    <div id="quantityDescription" class="muted"></div>
-
-    <label id="quantityLabel">Quantité en grammes</label>
-    <input id="quantityInput" type="number" min="0.1" step="0.1" value="100">
-
-    <br><br>
-
-    <button onclick="confirmQuantity()">Ajouter au repas</button>
-
-  </div>
-</div>
-
-
-<div class="modal" id="scannerModal">
-  <div class="modal-box">
-
-    <div class="modal-header">
-      <h2>📷 Scanner</h2>
-      <button class="secondary" onclick="closeScanner()">✕</button>
-    </div>
-
-    <p class="muted">
-      Place le code-barres devant la caméra.
-    </p>
-
-    <div class="camera-box">
-      <video id="scannerVideo" autoplay playsinline></video>
-    </div>
-
-    <div id="scannerStatus" class="muted">
-      Préparation de la caméra...
-    </div>
-
-    <hr>
-
-    <p class="muted">
-      Si le scan ne fonctionne pas, tu peux entrer le code-barres manuellement.
-    </p>
-
-    <input
-      id="manualBarcode"
-      type="text"
-      inputmode="numeric"
-      placeholder="Ex : 3017624010701"
-    >
-
-    <br><br>
-
-    <button onclick="searchBarcodeManually()">
-      Rechercher ce code
+    <button class="btn"
+            onclick="createManualFood()">
+      💾 Enregistrer
     </button>
 
   </div>
+
+</div>
+
+
+<!-- =====================================================
+     MODALE QUANTITÉ
+===================================================== -->
+
+<div id="quantityModal"
+     class="modal">
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+
+      <h2 id="quantityTitle">
+        Quantité
+      </h2>
+
+      <button class="close"
+              onclick="closeModal('quantityModal')">
+        ✕
+      </button>
+
+    </div>
+
+    <div class="form-group">
+
+      <label>
+        Quantité en grammes
+      </label>
+
+      <input
+        id="quantityInput"
+        type="number"
+        min="0"
+        step="0.1"
+        value="100"
+      >
+
+    </div>
+
+    <button class="btn"
+            onclick="confirmQuantity()">
+      Ajouter
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     MODALE SCANNER
+===================================================== -->
+
+<div id="scannerModal"
+     class="modal">
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+
+      <h2>📷 Scanner un code-barres</h2>
+
+      <button class="close"
+              onclick="closeScanner()">
+        ✕
+      </button>
+
+    </div>
+
+    <div class="camera-box">
+
+      <p class="muted">
+        Place le code-barres devant la caméra.
+      </p>
+
+      <video id="scannerVideo"
+             autoplay
+             playsinline>
+      </video>
+
+      <p id="scannerStatus"
+         class="muted">
+        Initialisation...
+      </p>
+
+    </div>
+
+  </div>
+
 </div>
 
 
 <script>
 
+/* =====================================================
+   CONFIGURATION
+===================================================== */
+
 const STORAGE_KEY = "energyLedgerV2";
 const FOOD_BASE_VERSION = 3;
 
-const SPOON_GRAMS = {
-  teaspoon:8,
-  tablespoon:22
-};
 
+/* =====================================================
+   ALIMENTS DE BASE
+===================================================== */
 
 const baseFoods = [
 
+  /* LÉGUMES & LÉGUMINEUSES */
+
   {
     name:"Haricots verts",
-    cat:"Légumes & légumineuses",
+    category:"Légumes",
     type:"100g",
     kcal:31,
-    p:1.8,
-    c:7,
-    f:0.2
+    protein:1.8,
+    carbs:7,
+    fat:0.2
   },
 
   {
     name:"Haricots rouges secs",
-    cat:"Légumes & légumineuses",
+    category:"Légumes",
     type:"100g",
     kcal:333,
-    p:24,
-    c:60,
-    f:0.8
+    protein:24,
+    carbs:60,
+    fat:0.8
   },
 
   {
     name:"Lentilles sèches",
-    cat:"Légumes & légumineuses",
+    category:"Légumes",
     type:"100g",
     kcal:353,
-    p:25,
-    c:60,
-    f:1.1
+    protein:25,
+    carbs:60,
+    fat:1.1
   },
 
   {
     name:"Concombre",
-    cat:"Légumes & légumineuses",
+    category:"Légumes",
     type:"100g",
     kcal:15,
-    p:0.7,
-    c:3.6,
-    f:0.1
+    protein:0.7,
+    carbs:3.6,
+    fat:0.1
   },
 
   {
     name:"Salade iceberg",
-    cat:"Légumes & légumineuses",
+    category:"Légumes",
     type:"100g",
     kcal:14,
-    p:0.9,
-    c:2.9,
-    f:0.1
+    protein:0.9,
+    carbs:2.9,
+    fat:0.1
   },
 
   {
     name:"Épinards conserve",
-    cat:"Légumes & légumineuses",
+    category:"Légumes",
     type:"100g",
     kcal:31,
-    p:3.6,
-    c:2.8,
-    f:0.5
+    protein:3.6,
+    carbs:2.8,
+    fat:0.5
   },
 
   {
     name:"Champignons de Paris",
-    cat:"Légumes & légumineuses",
+    category:"Légumes",
     type:"100g",
     kcal:18,
-    p:2.2,
-    c:3.1,
-    f:0.3
+    protein:2.2,
+    carbs:3.1,
+    fat:0.3
   },
+
+
+  /* FRUITS */
 
   {
     name:"Banane",
-    cat:"Fruits",
+    category:"Fruits",
     type:"100g",
     kcal:89,
-    p:1.1,
-    c:22.8,
-    f:0.3
+    protein:1.1,
+    carbs:22.8,
+    fat:0.3
   },
 
   {
     name:"Pêche",
-    cat:"Fruits",
+    category:"Fruits",
     type:"100g",
     kcal:39,
-    p:0.9,
-    c:9.5,
-    f:0.3
+    protein:0.9,
+    carbs:9.5,
+    fat:0.3
   },
 
   {
     name:"Orange",
-    cat:"Fruits",
+    category:"Fruits",
     type:"100g",
     kcal:47,
-    p:0.9,
-    c:11.8,
-    f:0.1
+    protein:0.9,
+    carbs:11.8,
+    fat:0.1
   },
 
   {
     name:"Pastèque",
-    cat:"Fruits",
+    category:"Fruits",
     type:"100g",
     kcal:30,
-    p:0.6,
-    c:7.6,
-    f:0.2
+    protein:0.6,
+    carbs:7.6,
+    fat:0.2
   },
 
   {
     name:"Melon",
-    cat:"Fruits",
+    category:"Fruits",
     type:"100g",
     kcal:34,
-    p:0.8,
-    c:8.2,
-    f:0.2
+    protein:0.8,
+    carbs:8.2,
+    fat:0.2
   },
 
   {
     name:"Avocat",
-    cat:"Fruits",
+    category:"Fruits",
     type:"100g",
     kcal:160,
-    p:2,
-    c:8.5,
-    f:14.7
+    protein:2,
+    carbs:8.5,
+    fat:14.7
   },
 
   {
     name:"Pomme",
-    cat:"Fruits",
+    category:"Fruits",
     type:"100g",
     kcal:52,
-    p:0.3,
-    c:13.8,
-    f:0.2
+    protein:0.3,
+    carbs:13.8,
+    fat:0.2
   },
+
+
+  /* PROTÉINES */
 
   {
     name:"Poulet blanc",
-    cat:"Protéines",
+    category:"Protéines",
     type:"100g",
     kcal:120,
-    p:22.5,
-    c:0,
-    f:2.6
+    protein:22.5,
+    carbs:0,
+    fat:2.6
   },
 
   {
     name:"Blanc de poulet charcuterie",
-    cat:"Protéines",
+    category:"Protéines",
     type:"unit",
     unitName:"tranche",
-    kcalUnit:21,
-    pUnit:4.4,
-    cUnit:0,
-    fUnit:0.4
+    unitWeight:1,
+    kcal:21,
+    protein:4.4,
+    carbs:0,
+    fat:0.4
   },
 
   {
     name:"Viande hachée 5%",
-    cat:"Protéines",
+    category:"Protéines",
     type:"100g",
     kcal:143,
-    p:21,
-    c:0,
-    f:5
+    protein:21,
+    carbs:0,
+    fat:5
   },
 
   {
     name:"Poisson blanc",
-    cat:"Protéines",
+    category:"Protéines",
     type:"100g",
     kcal:82,
-    p:17.8,
-    c:0,
-    f:1
+    protein:17.8,
+    carbs:0,
+    fat:1
   },
 
   {
     name:"Thon conserve",
-    cat:"Protéines",
+    category:"Protéines",
     type:"100g",
     kcal:100,
-    p:23,
-    c:0,
-    f:1
+    protein:23,
+    carbs:0,
+    fat:1
   },
 
   {
     name:"Saumon",
-    cat:"Protéines",
+    category:"Protéines",
     type:"100g",
     kcal:208,
-    p:20,
-    c:0,
-    f:13
+    protein:20,
+    carbs:0,
+    fat:13
   },
 
   {
     name:"Saumon fumé",
-    cat:"Protéines",
+    category:"Protéines",
     type:"100g",
     kcal:193,
-    p:21,
-    c:0,
-    f:12
+    protein:21,
+    carbs:0,
+    fat:12
   },
 
   {
     name:"Œufs",
-    cat:"Protéines",
+    category:"Protéines",
     type:"unit",
     unitName:"œuf",
-    kcalUnit:78,
-    pUnit:6.3,
-    cUnit:0.6,
-    fUnit:5.3
+    unitWeight:1,
+    kcal:78,
+    protein:6.3,
+    carbs:0.6,
+    fat:5.3
   },
 
   {
     name:"Filet colin panés",
-    cat:"Protéines",
+    category:"Protéines",
     type:"100g",
     kcal:202,
-    p:12,
-    c:17,
-    f:9
+    protein:12,
+    carbs:17,
+    fat:9
   },
 
   {
     name:"Blanc de poulet 2 / Délice de poulet",
-    cat:"Protéines",
+    category:"Protéines",
     type:"100g",
     kcal:234,
-    p:18.8,
-    c:2,
-    f:17
+    protein:18.8,
+    carbs:2,
+    fat:17
   },
 
   {
     name:"Petit délice poulet fumé",
-    cat:"Protéines",
+    category:"Protéines",
     type:"100g",
     kcal:260,
-    p:11,
-    c:2,
-    f:23
+    protein:11,
+    carbs:2,
+    fat:23
   },
+
+
+  /* FÉCULENTS */
 
   {
     name:"Pâtes sèches",
-    cat:"Glucides / féculents",
+    category:"Féculents",
     type:"100g",
     kcal:371,
-    p:13,
-    c:75,
-    f:1.5
+    protein:13,
+    carbs:75,
+    fat:1.5
   },
 
   {
     name:"Riz cru",
-    cat:"Glucides / féculents",
+    category:"Féculents",
     type:"100g",
     kcal:365,
-    p:7,
-    c:80,
-    f:0.7
+    protein:7,
+    carbs:80,
+    fat:0.7
   },
 
   {
     name:"Pomme de terre crue",
-    cat:"Glucides / féculents",
+    category:"Féculents",
     type:"100g",
     kcal:77,
-    p:2,
-    c:17,
-    f:0.1
+    protein:2,
+    carbs:17,
+    fat:0.1
   },
 
   {
     name:"Pain baguette",
-    cat:"Glucides / féculents",
+    category:"Féculents",
     type:"unit",
     unitName:"baguette",
-    kcalUnit:675,
-    pUnit:22.5,
-    cUnit:135,
-    fUnit:3
+    unitWeight:1,
+    kcal:675,
+    protein:22.5,
+    carbs:135,
+    fat:3
   },
 
   {
     name:"Tortillas de blé",
-    cat:"Glucides / féculents",
+    category:"Féculents",
     type:"100g",
     kcal:299,
-    p:9.1,
-    c:49,
-    f:8
+    protein:9.1,
+    carbs:49,
+    fat:8
   },
 
   {
     name:"Pain complet",
-    cat:"Glucides / féculents",
+    category:"Féculents",
     type:"100g",
     kcal:265,
-    p:5.8,
-    c:43,
-    f:4.2
+    protein:5.8,
+    carbs:43,
+    fat:4.2
   },
 
+
+  /* MATIÈRES GRASSES */
+
   {
-    name:"Huile d’olive",
-    cat:"Matières grasses & oméga-3",
+    name:"Huile d'olive",
+    category:"Matières grasses",
     type:"100g",
     kcal:884,
-    p:0,
-    c:0,
-    f:100
+    protein:0,
+    carbs:0,
+    fat:100
   },
 
   {
     name:"Huile colza Isio 4",
-    cat:"Matières grasses & oméga-3",
+    category:"Matières grasses",
     type:"100g",
     kcal:900,
-    p:0,
-    c:0,
-    f:100
+    protein:0,
+    carbs:0,
+    fat:100
   },
 
   {
     name:"Spray huile",
-    cat:"Matières grasses & oméga-3",
+    category:"Matières grasses",
     type:"unit",
     unitName:"g",
-    kcalUnit:8,
-    pUnit:0,
-    cUnit:0,
-    fUnit:0.9
+    unitWeight:1,
+    kcal:8,
+    protein:0,
+    carbs:0,
+    fat:0.9
   },
+
+
+  /* LAITIERS */
 
   {
     name:"Fromage blanc 0%",
-    cat:"Laitiers",
+    category:"Laitiers",
     type:"100g",
     kcal:48,
-    p:7.5,
-    c:4,
-    f:0.2
+    protein:7.5,
+    carbs:4,
+    fat:0.2
   },
 
   {
     name:"Fromage blanc 3% Bélisse",
-    cat:"Laitiers",
+    category:"Laitiers",
     type:"100g",
     kcal:69,
-    p:7.5,
-    c:4.2,
-    f:3
+    protein:7.5,
+    carbs:4.2,
+    fat:3
   },
 
   {
     name:"Gouda tranche",
-    cat:"Laitiers",
+    category:"Laitiers",
     type:"unit",
     unitName:"tranche",
-    kcalUnit:110,
-    pUnit:7.5,
-    cUnit:0.4,
-    fUnit:8.5
+    unitWeight:1,
+    kcal:110,
+    protein:7.5,
+    carbs:0.4,
+    fat:8.5
   },
 
   {
     name:"Cheddar tranche",
-    cat:"Laitiers",
+    category:"Laitiers",
     type:"unit",
     unitName:"tranche",
-    kcalUnit:46,
-    pUnit:2.6,
-    cUnit:0.1,
-    fUnit:3.8
+    unitWeight:1,
+    kcal:46,
+    protein:2.6,
+    carbs:0.1,
+    fat:3.8
   },
 
   {
     name:"Carrés Frais 0%",
-    cat:"Laitiers",
+    category:"Laitiers",
     type:"unit",
     unitName:"carré",
-    kcalUnit:21.25,
-    pUnit:4,
-    cUnit:0.7,
-    fUnit:0.2
+    unitWeight:1,
+    kcal:21.25,
+    protein:4,
+    carbs:0.7,
+    fat:0.2
   },
 
   {
     name:"Crème Bridélice 4%",
-    cat:"Laitiers",
+    category:"Laitiers",
     type:"100g",
     kcal:73,
-    p:3.3,
-    c:4.5,
-    f:4
+    protein:3.3,
+    carbs:4.5,
+    fat:4
   },
 
   {
     name:"Fromage fondu cheddar",
-    cat:"Laitiers",
+    category:"Laitiers",
     type:"100g",
     kcal:229,
-    p:13,
-    c:7,
-    f:17
+    protein:13,
+    carbs:7,
+    fat:17
   },
+
+
+  /* SAUCES */
 
   {
     name:"Mayonnaise",
-    cat:"Sauces & condiments",
+    category:"Sauces",
     type:"100g",
     kcal:680,
-    p:1,
-    c:1,
-    f:75
+    protein:1,
+    carbs:1,
+    fat:75
   },
 
   {
     name:"Moutarde",
-    cat:"Sauces & condiments",
+    category:"Sauces",
     type:"100g",
     kcal:145,
-    p:4.4,
-    c:6,
-    f:10
+    protein:4.4,
+    carbs:6,
+    fat:10
   },
 
   {
     name:"Sucre vanillé",
-    cat:"Sauces & condiments",
+    category:"Sauces",
     type:"100g",
     kcal:400,
-    p:0,
-    c:100,
-    f:0
+    protein:0,
+    carbs:100,
+    fat:0
   },
 
   {
-    name:"Sirop d’Agave",
-    cat:"Sauces & condiments",
+    name:"Sirop d'Agave",
+    category:"Sauces",
     type:"100g",
     kcal:320,
-    p:0,
-    c:79,
-    f:0
+    protein:0,
+    carbs:79,
+    fat:0
   },
 
   {
     name:"Sauce Suprême Spicy",
-    cat:"Sauces & condiments",
+    category:"Sauces",
     type:"100g",
     kcal:429,
-    p:1.5,
-    c:8,
-    f:43
+    protein:1.5,
+    carbs:8,
+    fat:43
   },
 
   {
     name:"Mayonnaise Heinz",
-    cat:"Sauces & condiments",
+    category:"Sauces",
     type:"100g",
     kcal:641,
-    p:0.8,
-    c:1,
-    f:70
+    protein:0.8,
+    carbs:1,
+    fat:70
   },
 
   {
     name:"Chocolat blanc Eco+",
-    cat:"Sauces & condiments",
+    category:"Sauces",
     type:"100g",
     kcal:540,
-    p:4,
-    c:59,
-    f:31
+    protein:4,
+    carbs:59,
+    fat:31
   },
 
   {
     name:"Olive nature",
-    cat:"Sauces & condiments",
+    category:"Sauces",
     type:"unit",
     unitName:"olive",
-    kcalUnit:6,
-    pUnit:0.04,
-    cUnit:0.2,
-    fUnit:0.6
+    unitWeight:1,
+    kcal:6,
+    protein:0.04,
+    carbs:0.2,
+    fat:0.6
   },
+
+
+  /* CONFISERIE */
 
   {
     name:"Bonbons pâte à mâcher",
-    cat:"Confiserie",
+    category:"Confiseries",
     type:"100g",
     kcal:409,
-    p:0,
-    c:96,
-    f:0
+    protein:0,
+    carbs:96,
+    fat:0
   },
 
   {
     name:"Kinder Bueno White",
-    cat:"Confiserie",
+    category:"Confiseries",
     type:"100g",
     kcal:571,
-    p:8.5,
-    c:54,
-    f:35
+    protein:8.5,
+    carbs:54,
+    fat:35
   }
 
 ];
 
 
-/* =========================================================
-   ÉTAT
-========================================================= */
+/* =====================================================
+   ÉTAT PAR DÉFAUT
+===================================================== */
 
 const defaultState = {
+
   foods:[],
   meals:[],
-  activity:0,
+  activity:{},
   weights:[],
-  profile:{
-    sex:"female",
-    age:25,
-    height:170,
-    weight:70
-  },
-  foodBaseVersion:0,
 
-  /* NOUVEAU :
-     mémorise les aliments de base supprimés */
+  profile:{
+    weight:64.5,
+    height:175,
+    age:23,
+    sex:"H"
+  },
+
   deletedFoodNames:[]
+
 };
 
 
-let S = loadState();
-
-
-/* =========================================================
-   CHARGEMENT DES DONNÉES
-========================================================= */
-
-/*
-  Cette fonction ajoute les aliments de base manquants
-  sans écraser les aliments déjà présents.
-
-  Un aliment qui a été supprimé est ignoré.
-*/
-function ensureBaseFoodsOnState(state){
-
-  state.deletedFoodNames =
-    Array.isArray(state.deletedFoodNames)
-      ? state.deletedFoodNames
-      : [];
-
-  state.foods =
-    Array.isArray(state.foods)
-      ? state.foods
-      : [];
-
-
-  baseFoods.forEach(base=>{
-
-    if(
-      state.deletedFoodNames.includes(base.name)
-    ){
-
-      return;
-    }
-
-
-    const exists=
-      state.foods.some(
-        f=>f.name===base.name
-      );
-
-
-    if(!exists){
-
-      state.foods.push(
-        JSON.parse(
-          JSON.stringify(base)
-        )
-      );
-
-    }
-
-  });
-
-
-  state.foodBaseVersion=
-    FOOD_BASE_VERSION;
-}
-
-
-function loadState(){
-
-  try{
-
-    const raw=
-      localStorage.getItem(
-        STORAGE_KEY
-      );
-
-
-    if(!raw){
-
-      const fresh=
-        JSON.parse(
-          JSON.stringify(defaultState)
-        );
-
-
-      ensureBaseFoodsOnState(fresh);
-
-
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(fresh)
-      );
-
-
-      return fresh;
-    }
-
-
-    const parsed=
-      JSON.parse(raw);
-
-
-    const state={
-
-      ...defaultState,
-
-      ...parsed,
-
-      profile:{
-        ...defaultState.profile,
-        ...(parsed.profile || {})
-      },
-
-      deletedFoodNames:
-        Array.isArray(parsed.deletedFoodNames)
-          ? parsed.deletedFoodNames
-          : []
-
-    };
-
-
-    ensureBaseFoodsOnState(state);
-
-
-    return state;
-
-
-  }catch(e){
-
-    console.error(e);
-
-
-    const fresh=
-      JSON.parse(
-        JSON.stringify(defaultState)
-      );
-
-
-    ensureBaseFoodsOnState(fresh);
-
-
-    return fresh;
-  }
-}
-
-
-function save(){
-
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(S)
-  );
-}
-
-
-/* =========================================================
+/* =====================================================
    UTILITAIRES
-========================================================= */
+===================================================== */
 
-function today(){
+function todayKey(){
 
-  const d=new Date();
+  const d = new Date();
 
-  const y=d.getFullYear();
-  const m=String(d.getMonth()+1).padStart(2,"0");
-  const day=String(d.getDate()).padStart(2,"0");
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,"0");
+  const day = String(d.getDate()).padStart(2,"0");
 
   return `${y}-${m}-${day}`;
+
 }
 
 
-function fmt(n){
+function round(value, decimals=1){
 
-  if(!Number.isFinite(Number(n))) return "0";
+  const factor = Math.pow(10,decimals);
 
-  return Number(n)
-    .toFixed(1)
-    .replace(".0","");
+  return Math.round((Number(value)||0)*factor)/factor;
+
 }
 
 
-function escapeQuotes(str){
-
-  return String(str)
-    .replace(/\\/g,"\\\\")
-    .replace(/'/g,"\\'");
-}
-
-
-function escapeHTML(value){
+function escapeHtml(value){
 
   return String(value ?? "")
     .replace(/&/g,"&amp;")
@@ -1507,1359 +1997,1519 @@ function escapeHTML(value){
     .replace(/>/g,"&gt;")
     .replace(/"/g,"&quot;")
     .replace(/'/g,"&#039;");
+
 }
 
 
-function getFood(name){
-
-  return S.foods.find(
-    f=>f.name===name
-  );
-}
-
-
-/* =========================================================
-   NOUVEAU : SAVOIR SI C'EST UN ALIMENT DE LA BASE
-========================================================= */
+/* =====================================================
+   LOCAL STORAGE
+===================================================== */
 
 function isBaseFood(name){
 
   return baseFoods.some(
-    f=>f.name===name
+    f => f.name === name
   );
+
 }
 
 
-/* =========================================================
-   NOUVEAU : SUPPRIMER UN ALIMENT
-========================================================= */
+function ensureBaseFoodsOnState(state){
 
-function deleteFood(name){
-
-  const food=getFood(name);
-
-  if(!food)return;
-
-
-  const ok=
-    confirm(
-      `Supprimer « ${name} » de tes aliments ?`
-    );
-
-
-  if(!ok)return;
-
-
-  /*
-    Si c'est un aliment fourni dans la base,
-    on mémorise sa suppression pour qu'il
-    ne réapparaisse pas après actualisation.
-  */
-  if(
-    isBaseFood(name) &&
-    !S.deletedFoodNames.includes(name)
-  ){
-
-    S.deletedFoodNames.push(name);
-
+  if(!Array.isArray(state.foods)){
+    state.foods = [];
   }
 
-
-  /*
-    On supprime uniquement l'aliment de la liste.
-    Les repas déjà enregistrés restent inchangés.
-  */
-  S.foods=
-    S.foods.filter(
-      f=>f.name!==name
-    );
-
-
-  save();
-
-  renderFoods();
-}
-
-
-/* =========================================================
-   ALIMENTS
-========================================================= */
-
-function renderFoods(){
-
-  const search=
-    document
-      .getElementById("foodSearch")
-      .value
-      .toLowerCase()
-      .trim();
-
-
-  const cat=
-    document
-      .getElementById("foodCategory")
-      .value;
-
-
-  const box=
-    document.getElementById(
-      "foodList"
-    );
-
-
-  box.innerHTML="";
-
-
-  const foods=
-    S.foods.filter(f=>{
-
-      return f.name
-        .toLowerCase()
-        .includes(search)
-        &&
-        (!cat || f.cat===cat);
-
-    });
-
-
-  if(!foods.length){
-
-    box.innerHTML=
-      '<p class="muted">Aucun aliment trouvé.</p>';
-
-    return;
+  if(!Array.isArray(state.deletedFoodNames)){
+    state.deletedFoodNames = [];
   }
 
+  baseFoods.forEach(base => {
 
-  const grouped={};
+    const deleted =
+      state.deletedFoodNames.includes(base.name);
 
+    const exists =
+      state.foods.some(f => f.name === base.name);
 
-  foods.forEach(f=>{
+    if(!deleted && !exists){
 
-    if(!grouped[f.cat]){
-
-      grouped[f.cat]=[];
+      state.foods.push({
+        ...base,
+        source:"base"
+      });
 
     }
 
-    grouped[f.cat].push(f);
+  });
+
+  return state;
+
+}
+
+
+function loadState(){
+
+  let state;
+
+  try{
+
+    state =
+      JSON.parse(
+        localStorage.getItem(STORAGE_KEY)
+      );
+
+  }catch(e){
+
+    state = null;
+
+  }
+
+  if(!state){
+
+    state = JSON.parse(
+      JSON.stringify(defaultState)
+    );
+
+  }
+
+  if(!state.profile){
+
+    state.profile = {
+      ...defaultState.profile
+    };
+
+  }
+
+  state = ensureBaseFoodsOnState(state);
+
+  return state;
+
+}
+
+
+let state = loadState();
+
+
+function saveState(){
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(state)
+  );
+
+}
+
+
+/* =====================================================
+   ONGLETS
+===================================================== */
+
+function showTab(tabId){
+
+  document
+    .querySelectorAll(".tab-panel")
+    .forEach(panel => {
+
+      panel.classList.remove("active");
+
+    });
+
+  document
+    .querySelectorAll(".tab-button")
+    .forEach(button => {
+
+      button.classList.remove("active");
+
+    });
+
+  const panel =
+    document.getElementById(tabId);
+
+  const button =
+    document.querySelector(
+      `[data-tab="${tabId}"]`
+    );
+
+  if(panel){
+    panel.classList.add("active");
+  }
+
+  if(button){
+    button.classList.add("active");
+  }
+
+  localStorage.setItem(
+    "energyLedgerActiveTab",
+    tabId
+  );
+
+  if(tabId === "tab-poids"){
+
+    setTimeout(
+      drawWeightChart,
+      50
+    );
+
+  }
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+}
+
+
+/* =====================================================
+   ALIMENTS
+===================================================== */
+
+function renderFoods(){
+
+  const container =
+    document.getElementById("foodsList");
+
+  if(!container) return;
+
+  const search =
+    (
+      document.getElementById("foodFilter")?.value ||
+      ""
+    ).toLowerCase().trim();
+
+  const category =
+    document.getElementById("categoryFilter")?.value ||
+    "";
+
+  const foods =
+    state.foods.filter(food => {
+
+      const matchesSearch =
+        !search ||
+        food.name.toLowerCase().includes(search) ||
+        String(food.brand || "")
+          .toLowerCase()
+          .includes(search);
+
+      const matchesCategory =
+        !category ||
+        food.category === category;
+
+      return matchesSearch && matchesCategory;
+
+    });
+
+  if(!foods.length){
+
+    container.innerHTML =
+      `<div class="empty">
+        Aucun aliment trouvé.
+      </div>`;
+
+    return;
+
+  }
+
+  const categories = {};
+
+  foods.forEach(food => {
+
+    const cat =
+      food.category || "Autres";
+
+    if(!categories[cat]){
+      categories[cat] = [];
+    }
+
+    categories[cat].push(food);
 
   });
 
+  let html = "";
 
-  Object.keys(grouped).forEach(category=>{
+  Object.keys(categories).forEach(categoryName => {
 
-    const h=
-      document.createElement("h3");
+    html += `
+      <div class="category-title">
+        ${escapeHtml(categoryName)}
+      </div>
+    `;
 
+    categories[categoryName].forEach(food => {
 
-    h.textContent=category;
-
-
-    box.appendChild(h);
-
-
-    grouped[category].forEach(f=>{
-
-      const div=
-        document.createElement("div");
-
-
-      div.className="food";
-
-
-      if(f.type==="unit"){
-
-        div.innerHTML=`
-
-          <div class="food-header">
-
-            <div class="food-title">
-
-              <strong>
-                ${escapeHTML(f.name)}
-              </strong>
-
-              <small>
-                ${fmt(f.kcalUnit)} kcal / ${escapeHTML(f.unitName)}
-                • ${fmt(f.pUnit)} g protéines
-              </small>
-
-            </div>
-
-
-            <button
-              class="danger food-delete"
-              onclick="deleteFood('${escapeQuotes(f.name)}')"
-              title="Supprimer cet aliment">
-
-              ✕
-
-            </button>
-
-          </div>
-
-
-          <div class="food-actions">
-
-            <button
-              class="secondary"
-              onclick="addFood('${escapeQuotes(f.name)}')">
-
-              Ajouter
-
-            </button>
-
-          </div>
-
-        `;
-
-      }else{
-
-        div.innerHTML=`
-
-          <div class="food-header">
-
-            <div class="food-title">
-
-              <strong>
-                ${escapeHTML(f.name)}
-              </strong>
-
-              <small>
-                ${fmt(f.kcal)} kcal / 100 g
-                • ${fmt(f.p)} g protéines
-              </small>
-
-            </div>
-
-
-            <button
-              class="danger food-delete"
-              onclick="deleteFood('${escapeQuotes(f.name)}')"
-              title="Supprimer cet aliment">
-
-              ✕
-
-            </button>
-
-          </div>
-
-
-          <div class="spoon-actions">
-
-            <button
-              class="secondary"
-              onclick="addFoodBySpoon(
-                '${escapeQuotes(f.name)}',
-                'teaspoon'
-              )">
-
-              🥄 Café
-
-              <small>
-                8 g
-              </small>
-
-            </button>
-
-
-            <button
-              class="secondary"
-              onclick="addFoodBySpoon(
-                '${escapeQuotes(f.name)}',
-                'tablespoon'
-              )">
-
-              🥄 Soupe
-
-              <small>
-                22 g
-              </small>
-
-            </button>
-
-
-            <button
-              class="secondary"
-              onclick="addFoodByGram(
-                '${escapeQuotes(f.name)}'
-              )">
-
-              ⚖️ g
-
-            </button>
-
-          </div>
-
-        `;
-
-      }
-
-
-      box.appendChild(div);
+      html += renderFoodCard(food);
 
     });
 
   });
+
+  container.innerHTML = html;
+
 }
 
 
-/* =========================================================
-   AJOUT ALIMENT
-========================================================= */
+function renderFoodCard(food){
 
-function addFood(name){
+  const base =
+    isBaseFood(food.name);
 
-  const food=getFood(name);
+  let macros = `
+    <span class="macro">
+      ${round(food.kcal)} kcal/100g
+    </span>
 
-  if(!food)return;
+    <span class="macro">
+      P ${round(food.protein)}g
+    </span>
 
+    <span class="macro">
+      G ${round(food.carbs)}g
+    </span>
 
-  if(food.type==="unit"){
+    <span class="macro">
+      L ${round(food.fat)}g
+    </span>
+  `;
 
-    openQuantityModal(
-      food,
-      food.unitName,
-      food.unitName
-    );
+  let actions = "";
+
+  if(food.type === "100g"){
+
+    actions = `
+
+      <button
+        onclick="addFoodByGrams('${encodeURIComponent(food.name)}',8)">
+        🥄 Café — 8 g
+      </button>
+
+      <button
+        onclick="addFoodByGrams('${encodeURIComponent(food.name)}',22)">
+        🥄 Soupe — 22 g
+      </button>
+
+      <button
+        onclick="openQuantity('${encodeURIComponent(food.name)}')">
+        ⚖️ g
+      </button>
+
+    `;
 
   }else{
 
-    openQuantityModal(
-      food,
-      "g",
-      "grammes"
-    );
+    actions = `
+
+      <button
+        onclick="addUnitFood('${encodeURIComponent(food.name)}')">
+        ➕ ${escapeHtml(food.unitName || "unité")}
+      </button>
+
+    `;
 
   }
+
+  const deleteButton =
+    base
+      ? `
+        <button
+          class="food-delete"
+          onclick="deleteFood('${encodeURIComponent(food.name)}')">
+          ✕
+        </button>
+      `
+      : "";
+
+  return `
+
+    <div class="food-card">
+
+      <div class="food-header">
+
+        <div>
+
+          <div class="food-title">
+            ${escapeHtml(food.name)}
+          </div>
+
+          ${
+            food.brand
+              ? `<div class="food-info">
+                  ${escapeHtml(food.brand)}
+                </div>`
+              : ""
+          }
+
+        </div>
+
+        ${deleteButton}
+
+      </div>
+
+      <div class="food-macros">
+        ${macros}
+      </div>
+
+      <div class="food-actions">
+        ${actions}
+      </div>
+
+    </div>
+
+  `;
+
 }
 
 
-function addFoodByGram(name){
+function findFood(name){
 
-  const food=getFood(name);
+  return state.foods.find(
+    f => f.name === name
+  );
 
-  if(!food)return;
+}
 
 
-  if(food.type!=="100g"){
+/* =====================================================
+   SUPPRESSION ALIMENTS DE BASE
+===================================================== */
 
-    alert(
-      "Cet aliment se compte à l'unité."
-    );
+function deleteFood(encodedName){
 
+  const name =
+    decodeURIComponent(encodedName);
+
+  if(!isBaseFood(name)){
     return;
   }
 
-
-  openQuantityModal(
-    food,
-    "g",
-    "grammes"
-  );
-}
-
-
-function addFoodBySpoon(name,mode){
-
-  const food=getFood(name);
-
-  if(!food)return;
-
-
-  if(food.type!=="100g"){
-
-    alert(
-      "La quantité en cuillères n'est pas disponible pour cet aliment."
+  const confirmed =
+    confirm(
+      `Supprimer "${name}" de ta base d'aliments ?`
     );
 
+  if(!confirmed){
     return;
   }
 
+  if(!state.deletedFoodNames.includes(name)){
 
-  const grams=
-    SPOON_GRAMS[mode];
+    state.deletedFoodNames.push(name);
 
+  }
 
-  const label=
-    mode==="teaspoon"
-      ? "cuillère à café"
-      : "cuillère à soupe";
+  state.foods =
+    state.foods.filter(
+      food => food.name !== name
+    );
 
+  saveState();
+  renderAll();
 
-  openQuantityModal(
-    food,
-    mode==="teaspoon"
-      ? "c. à café"
-      : "c. à soupe",
-    `${label} — 1 = ${grams} g`,
-    grams
-  );
 }
 
 
-/* =========================================================
-   MODAL QUANTITÉ
-========================================================= */
+/* =====================================================
+   AJOUT QUANTITÉ
+===================================================== */
 
-let pendingFood=null;
-let pendingUnit="g";
-let pendingGramsPerUnit=null;
+let selectedFoodName = null;
 
 
-function openQuantityModal(
-  food,
-  unit,
-  description,
-  gramsPerUnit=null
-){
+function openQuantity(encodedName){
 
-  pendingFood=food;
-  pendingUnit=unit;
-  pendingGramsPerUnit=gramsPerUnit;
+  selectedFoodName =
+    decodeURIComponent(encodedName);
 
+  const food =
+    findFood(selectedFoodName);
+
+  if(!food) return;
 
   document.getElementById(
     "quantityTitle"
-  ).textContent=
-    `Ajouter ${food.name}`;
-
-
-  document.getElementById(
-    "quantityDescription"
-  ).textContent=
-    description;
-
-
-  const label=
-    unit==="g"
-      ? "Quantité en grammes"
-      : `Quantité en ${unit}`;
-
-
-  document.getElementById(
-    "quantityLabel"
-  ).textContent=label;
-
+  ).textContent =
+    `⚖️ ${food.name}`;
 
   document.getElementById(
     "quantityInput"
-  ).value="1";
+  ).value = 100;
+
+  openModal("quantityModal");
+
+}
 
 
-  if(unit==="g"){
+function addFoodByGrams(encodedName, grams){
 
-    document.getElementById(
-      "quantityInput"
-    ).value="100";
+  const name =
+    decodeURIComponent(encodedName);
 
-  }
+  addFoodToMeal(
+    name,
+    Number(grams)
+  );
 
-
-  document.getElementById(
-    "quantityModal"
-  ).classList.add("open");
 }
 
 
 function confirmQuantity(){
 
-  if(!pendingFood)return;
+  if(!selectedFoodName) return;
 
-
-  let quantity=
+  const grams =
     Number(
       document.getElementById(
         "quantityInput"
       ).value
     );
 
+  if(!grams || grams <= 0){
 
-  if(
-    !Number.isFinite(quantity)
-    ||
-    quantity<=0
-  ){
-
-    alert("Quantité invalide.");
+    alert("Entre une quantité valide.");
 
     return;
-  }
-
-
-  let grams=null;
-
-
-  if(pendingFood.type==="100g"){
-
-    if(pendingUnit==="g"){
-
-      grams=quantity;
-
-    }else{
-
-      grams=
-        quantity *
-        pendingGramsPerUnit;
-
-    }
 
   }
 
-
-  addFoodEntry(
-    pendingFood,
-    quantity,
-    pendingUnit,
+  addFoodToMeal(
+    selectedFoodName,
     grams
   );
 
+  closeModal("quantityModal");
 
-  closeModal(
-    "quantityModal"
+}
+
+
+function addUnitFood(encodedName){
+
+  const name =
+    decodeURIComponent(encodedName);
+
+  const food =
+    findFood(name);
+
+  if(!food) return;
+
+  addFoodToMeal(
+    name,
+    1
   );
 
-
-  pendingFood=null;
 }
 
 
-function addFoodEntry(
-  food,
-  quantity,
-  unit,
-  grams
-){
+/* =====================================================
+   REPAS
+===================================================== */
 
-  let kcal;
-  let p;
-  let c;
-  let f;
+function addMeal(){
 
+  const name =
+    prompt(
+      "Nom du repas :",
+      "Repas"
+    );
 
-  if(food.type==="unit"){
+  if(!name) return;
 
-    kcal=
-      quantity *
-      Number(food.kcalUnit || 0);
+  const meal = {
 
-    p=
-      quantity *
-      Number(food.pUnit || 0);
+    id:Date.now(),
 
-    c=
-      quantity *
-      Number(food.cUnit || 0);
+    date:todayKey(),
 
-    f=
-      quantity *
-      Number(food.fUnit || 0);
+    name:name.trim(),
 
-  }else{
+    foods:[]
 
-    const factor=
-      Number(grams)/100;
+  };
 
+  state.meals.push(meal);
 
-    kcal=
-      Number(food.kcal || 0) *
-      factor;
-
-    p=
-      Number(food.p || 0) *
-      factor;
-
-    c=
-      Number(food.c || 0) *
-      factor;
-
-    f=
-      Number(food.f || 0) *
-      factor;
-  }
-
-
-  S.meals.push({
-
-    date:today(),
-
-    food:food.name,
-
-    quantity:quantity,
-
-    unit:unit,
-
-    grams:grams,
-
-    kcal:kcal,
-
-    p:p,
-
-    c:c,
-
-    f:f
-
-  });
-
-
-  save();
+  saveState();
 
   renderAll();
+
 }
 
 
-/* =========================================================
-   REPAS
-========================================================= */
+function getTodayMeals(){
 
-function renderMeals(){
+  return state.meals.filter(
+    meal => meal.date === todayKey()
+  );
 
-  const box=
-    document.getElementById(
-      "mealList"
-    );
+}
 
 
-  const meals=
-    S.meals.filter(
-      m=>m.date===today()
-    );
+function chooseMeal(){
 
-
-  box.innerHTML="";
-
+  const meals =
+    getTodayMeals();
 
   if(!meals.length){
 
-    box.innerHTML=
-      '<p class="muted">Aucun aliment aujourd’hui.</p>';
+    const name =
+      prompt(
+        "Aucun repas aujourd'hui.\nNom du premier repas :",
+        "Petit-déjeuner"
+      );
 
+    if(!name){
+      return null;
+    }
+
+    const meal = {
+
+      id:Date.now(),
+
+      date:todayKey(),
+
+      name:name.trim(),
+
+      foods:[]
+
+    };
+
+    state.meals.push(meal);
+
+    return meal;
+
+  }
+
+  let message =
+    "Choisis un repas :\n\n";
+
+  meals.forEach(
+    (meal,index) => {
+
+      message +=
+        `${index+1}. ${meal.name}\n`;
+
+    }
+  );
+
+  message +=
+    "\nTape le numéro ou Annuler pour créer un nouveau repas.";
+
+  const answer =
+    prompt(message);
+
+  if(answer === null){
+    return null;
+  }
+
+  const index =
+    Number(answer)-1;
+
+  if(
+    Number.isInteger(index) &&
+    meals[index]
+  ){
+
+    return meals[index];
+
+  }
+
+  const newName =
+    prompt(
+      "Nom du nouveau repas :",
+      "Collation"
+    );
+
+  if(!newName){
+    return null;
+  }
+
+  const meal = {
+
+    id:Date.now(),
+
+    date:todayKey(),
+
+    name:newName.trim(),
+
+    foods:[]
+
+  };
+
+  state.meals.push(meal);
+
+  return meal;
+
+}
+
+
+function addFoodToMeal(name, quantity){
+
+  const food =
+    findFood(name);
+
+  if(!food){
+
+    alert("Aliment introuvable.");
+
+    return;
+
+  }
+
+  const meal =
+    chooseMeal();
+
+  if(!meal) return;
+
+  meal.foods.push({
+
+    name:food.name,
+
+    quantity:Number(quantity),
+
+    type:food.type,
+
+    kcal:food.kcal,
+
+    protein:food.protein,
+
+    carbs:food.carbs,
+
+    fat:food.fat
+
+  });
+
+  saveState();
+  renderAll();
+
+}
+
+
+function getMealFoodNutrition(item){
+
+  if(item.type === "unit"){
+
+    return {
+
+      kcal:item.kcal * item.quantity,
+
+      protein:item.protein * item.quantity,
+
+      carbs:item.carbs * item.quantity,
+
+      fat:item.fat * item.quantity
+
+    };
+
+  }
+
+  const factor =
+    item.quantity / 100;
+
+  return {
+
+    kcal:item.kcal * factor,
+
+    protein:item.protein * factor,
+
+    carbs:item.carbs * factor,
+
+    fat:item.fat * factor
+
+  };
+
+}
+
+
+function getMealTotals(meal){
+
+  const total = {
+
+    kcal:0,
+    protein:0,
+    carbs:0,
+    fat:0
+
+  };
+
+  meal.foods.forEach(item => {
+
+    const n =
+      getMealFoodNutrition(item);
+
+    total.kcal += n.kcal;
+    total.protein += n.protein;
+    total.carbs += n.carbs;
+    total.fat += n.fat;
+
+  });
+
+  return total;
+
+}
+
+
+function removeMeal(mealId){
+
+  if(!confirm("Supprimer ce repas ?")){
     return;
   }
 
+  state.meals =
+    state.meals.filter(
+      meal => meal.id !== mealId
+    );
 
-  meals.forEach((m,index)=>{
+  saveState();
+  renderAll();
 
-    const div=
-      document.createElement("div");
-
-
-    div.className="meal-item";
-
-
-    let quantityText=
-      `${fmt(m.quantity)} ${m.unit}`;
-
-
-    if(
-      m.grams &&
-      (
-        m.unit==="c. à café" ||
-        m.unit==="c. à soupe"
-      )
-    ){
-
-      quantityText+=
-        ` (${fmt(m.grams)} g)`;
-
-    }
-
-
-    div.innerHTML=`
-
-      <div class="meal-info">
-
-        <strong>${escapeHTML(m.food)}</strong>
-
-        <span class="muted">
-          ${quantityText}
-        </span>
-
-      </div>
-
-
-      <div class="meal-macros">
-
-        <strong>
-          ${fmt(m.kcal)} kcal
-        </strong>
-
-        <span class="muted">
-          P ${fmt(m.p)}
-          • G ${fmt(m.c)}
-          • L ${fmt(m.f)}
-        </span>
-
-      </div>
-
-
-      <button
-        class="danger"
-        onclick="removeMeal(${index})">
-
-        ✕
-
-      </button>
-
-    `;
-
-
-    box.appendChild(div);
-
-  });
 }
 
 
-function removeMeal(index){
+function removeMealFood(mealId,index){
 
-  const meals=
-    S.meals.filter(
-      m=>m.date===today()
+  const meal =
+    state.meals.find(
+      m => m.id === mealId
     );
 
+  if(!meal) return;
 
-  const target=
-    meals[index];
+  meal.foods.splice(index,1);
 
+  saveState();
+  renderAll();
 
-  if(!target)return;
-
-
-  const realIndex=
-    S.meals.indexOf(target);
+}
 
 
-  if(realIndex>=0){
+function renderMeals(){
 
-    S.meals.splice(
-      realIndex,
-      1
+  const container =
+    document.getElementById(
+      "mealsList"
     );
+
+  if(!container) return;
+
+  const meals =
+    getTodayMeals();
+
+  if(!meals.length){
+
+    container.innerHTML =
+      `<div class="empty">
+        Aucun repas enregistré aujourd'hui.
+      </div>`;
+
+    return;
 
   }
 
+  container.innerHTML =
+    meals.map(meal => {
 
-  save();
+      const total =
+        getMealTotals(meal);
 
-  renderAll();
+      const foodsHtml =
+        meal.foods.length
+          ? meal.foods.map(
+              (item,index) => {
+
+                const n =
+                  getMealFoodNutrition(item);
+
+                const quantityLabel =
+                  item.type === "unit"
+                    ? `${item.quantity} unité(s)`
+                    : `${round(item.quantity)} g`;
+
+                return `
+
+                  <div class="meal-food">
+
+                    <div style="display:flex;justify-content:space-between;gap:10px">
+
+                      <div>
+
+                        <strong>
+                          ${escapeHtml(item.name)}
+                        </strong>
+
+                        <div class="muted">
+                          ${quantityLabel}
+                        </div>
+
+                      </div>
+
+                      <div style="text-align:right">
+
+                        <strong>
+                          ${round(n.kcal)} kcal
+                        </strong>
+
+                        <div class="muted">
+                          P ${round(n.protein)}g ·
+                          G ${round(n.carbs)}g ·
+                          L ${round(n.fat)}g
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                    <button
+                      class="btn-secondary"
+                      style="margin-top:6px"
+                      onclick="removeMealFood(${meal.id},${index})">
+                      Retirer
+                    </button>
+
+                  </div>
+
+                `;
+
+              }
+            ).join("")
+          : `
+            <div class="empty">
+              Aucun aliment dans ce repas.
+            </div>
+          `;
+
+      return `
+
+        <div class="meal-card">
+
+          <div class="meal-head">
+
+            <h3>
+              ${escapeHtml(meal.name)}
+            </h3>
+
+            <button
+              class="btn-danger"
+              onclick="removeMeal(${meal.id})">
+              Supprimer
+            </button>
+
+          </div>
+
+          <div style="margin-top:10px">
+            ${foodsHtml}
+          </div>
+
+          <div class="meal-total">
+
+            Total :
+            ${round(total.kcal)} kcal ·
+            P ${round(total.protein)} g ·
+            G ${round(total.carbs)} g ·
+            L ${round(total.fat)} g
+
+          </div>
+
+        </div>
+
+      `;
+
+    }).join("");
+
 }
 
 
-/* =========================================================
-   MACROS
-========================================================= */
+/* =====================================================
+   TOTAL JOURNALIER
+===================================================== */
 
-function getTodayMacros(){
+function getTodayTotals(){
 
-  const meals=
-    S.meals.filter(
-      m=>m.date===today()
-    );
+  const total = {
 
+    kcal:0,
+    protein:0,
+    carbs:0,
+    fat:0
 
-  return meals.reduce(
+  };
 
-    (acc,m)=>{
+  getTodayMeals().forEach(
+    meal => {
 
-      acc.kcal+=
-        Number(m.kcal)||0;
+      const t =
+        getMealTotals(meal);
 
-      acc.p+=
-        Number(m.p)||0;
+      total.kcal += t.kcal;
+      total.protein += t.protein;
+      total.carbs += t.carbs;
+      total.fat += t.fat;
 
-      acc.c+=
-        Number(m.c)||0;
-
-      acc.f+=
-        Number(m.f)||0;
-
-      return acc;
-
-    },
-
-    {
-      kcal:0,
-      p:0,
-      c:0,
-      f:0
     }
-
   );
+
+  return total;
+
 }
 
 
-function renderMacros(){
+function renderToday(){
 
-  const m=
-    getTodayMacros();
-
-
-  document.getElementById(
-    "totalKcal"
-  ).textContent=
-    Math.round(m.kcal);
-
+  const total =
+    getTodayTotals();
 
   document.getElementById(
-    "totalProtein"
-  ).textContent=
-    `${fmt(m.p)} g`;
-
-
-  document.getElementById(
-    "totalCarbs"
-  ).textContent=
-    `${fmt(m.c)} g`;
-
+    "todayCalories"
+  ).textContent =
+    `${round(total.kcal)} kcal`;
 
   document.getElementById(
-    "totalFat"
-  ).textContent=
-    `${fmt(m.f)} g`;
+    "todayProtein"
+  ).textContent =
+    `${round(total.protein)} g`;
+
+  document.getElementById(
+    "todayCarbs"
+  ).textContent =
+    `${round(total.carbs)} g`;
+
+  document.getElementById(
+    "todayFat"
+  ).textContent =
+    `${round(total.fat)} g`;
+
 }
 
 
-/* =========================================================
+/* =====================================================
    TEF
-========================================================= */
+===================================================== */
+
+function calculateTEF(){
+
+  const total =
+    getTodayTotals();
+
+  const protein =
+    total.protein * 4;
+
+  const carbs =
+    total.carbs * 4;
+
+  const fat =
+    total.fat * 9;
+
+  const tefProtein =
+    protein * 0.25;
+
+  const tefCarbs =
+    carbs * 0.075;
+
+  const tefFat =
+    fat * 0.02;
+
+  const tefTotal =
+    tefProtein +
+    tefCarbs +
+    tefFat;
+
+  return {
+
+    protein:tefProtein,
+
+    carbs:tefCarbs,
+
+    fat:tefFat,
+
+    total:tefTotal
+
+  };
+
+}
+
 
 function renderTEF(){
 
-  const m=
-    getTodayMacros();
-
-
-  const proteinTEF=
-    m.p * 4 * 0.25;
-
-
-  const carbTEF=
-    m.c * 4 * 0.075;
-
-
-  const fatTEF=
-    m.f * 9 * 0.02;
-
-
-  const total=
-    proteinTEF +
-    carbTEF +
-    fatTEF;
-
+  const tef =
+    calculateTEF();
 
   document.getElementById(
     "tefProtein"
-  ).textContent=
-    Math.round(proteinTEF);
-
+  ).textContent =
+    `${round(tef.protein)} kcal`;
 
   document.getElementById(
     "tefCarbs"
-  ).textContent=
-    Math.round(carbTEF);
-
+  ).textContent =
+    `${round(tef.carbs)} kcal`;
 
   document.getElementById(
     "tefFat"
-  ).textContent=
-    Math.round(fatTEF);
-
+  ).textContent =
+    `${round(tef.fat)} kcal`;
 
   document.getElementById(
     "tefTotal"
-  ).textContent=
-    Math.round(total);
+  ).textContent =
+    `${round(tef.total)} kcal`;
+
 }
 
 
-function getTEF(){
-
-  const m=
-    getTodayMacros();
-
-
-  return (
-    m.p * 4 * 0.25
-  )
-  +
-  (
-    m.c * 4 * 0.075
-  )
-  +
-  (
-    m.f * 9 * 0.02
-  );
-}
-
-
-/* =========================================================
-   BMR
-========================================================= */
+/* =====================================================
+   PROFIL / BMR
+===================================================== */
 
 function calculateBMR(){
 
-  const p=S.profile;
+  const p =
+    state.profile;
 
+  const weight =
+    Number(p.weight)||0;
 
-  if(p.sex==="male"){
+  const height =
+    Number(p.height)||0;
 
-    return(
-      10*p.weight +
-      6.25*p.height -
-      5*p.age +
-      5
-    );
+  const age =
+    Number(p.age)||0;
 
+  if(!weight || !height || !age){
+    return 0;
   }
 
-
-  return(
-    10*p.weight +
-    6.25*p.height -
-    5*p.age -
-    161
+  return (
+    10 * weight +
+    6.25 * height -
+    5 * age +
+    (p.sex === "H" ? 5 : -161)
   );
+
 }
 
 
-function renderBMR(){
-
-  document.getElementById(
-    "profileSex"
-  ).value=
-    S.profile.sex;
-
-
-  document.getElementById(
-    "profileAge"
-  ).value=
-    S.profile.age;
-
-
-  document.getElementById(
-    "profileHeight"
-  ).value=
-    S.profile.height;
-
+function renderProfile(){
 
   document.getElementById(
     "profileWeight"
-  ).value=
-    S.profile.weight;
+  ).value =
+    state.profile.weight;
 
+  document.getElementById(
+    "profileHeight"
+  ).value =
+    state.profile.height;
+
+  document.getElementById(
+    "profileAge"
+  ).value =
+    state.profile.age;
+
+  document.getElementById(
+    "profileSex"
+  ).value =
+    state.profile.sex;
+
+  const bmr =
+    calculateBMR();
 
   document.getElementById(
     "bmrValue"
-  ).textContent=
-    `${Math.round(calculateBMR())} kcal`;
+  ).textContent =
+    round(bmr);
+
 }
 
 
 function saveProfile(){
 
-  const sex=
-    document.getElementById(
-      "profileSex"
-    ).value;
-
-
-  const age=
-    Number(
-      document.getElementById(
-        "profileAge"
-      ).value
-    );
-
-
-  const height=
-    Number(
-      document.getElementById(
-        "profileHeight"
-      ).value
-    );
-
-
-  const weight=
+  const weight =
     Number(
       document.getElementById(
         "profileWeight"
       ).value
     );
 
-
-  if(
-    !age ||
-    !height ||
-    !weight
-  ){
-
-    alert(
-      "Vérifie les informations du profil."
-    );
-
-    return;
-  }
-
-
-  S.profile={
-    sex,
-    age,
-    height,
-    weight
-  };
-
-
-  save();
-
-  renderAll();
-}
-
-
-/* =========================================================
-   ACTIVITÉ
-========================================================= */
-
-function renderActivity(){
-
-  document.getElementById(
-    "activityInput"
-  ).value=
-    S.activity || "";
-
-
-  document.getElementById(
-    "activityValue"
-  ).textContent=
-    `${Math.round(
-      Number(S.activity || 0) * 0.70
-    )} kcal`;
-}
-
-
-function saveActivity(){
-
-  const value=
+  const height =
     Number(
       document.getElementById(
-        "activityInput"
+        "profileHeight"
       ).value
     );
 
+  const age =
+    Number(
+      document.getElementById(
+        "profileAge"
+      ).value
+    );
+
+  const sex =
+    document.getElementById(
+      "profileSex"
+    ).value;
 
   if(
-    !Number.isFinite(value)
-    ||
-    value<0
+    weight <= 0 ||
+    height <= 0 ||
+    age <= 0
   ){
 
+    alert("Vérifie les valeurs du profil.");
+
+    return;
+
+  }
+
+  state.profile = {
+
+    weight,
+    height,
+    age,
+    sex
+
+  };
+
+  saveState();
+  renderAll();
+
+}
+
+
+/* =====================================================
+   ACTIVITÉ
+===================================================== */
+
+function saveActivity(){
+
+  const value =
+    Number(
+      document.getElementById(
+        "activityCalories"
+      ).value
+    );
+
+  if(value < 0 || !Number.isFinite(value)){
+
     alert(
-      "Valeur invalide."
+      "Entre un nombre valide."
     );
 
     return;
+
   }
 
+  state.activity[todayKey()] =
+    value;
 
-  S.activity=value;
-
-  save();
-
+  saveState();
   renderAll();
+
 }
 
 
-function getCorrectedActivity(){
+function getActivityRaw(){
 
-  return(
-    Number(S.activity || 0) *
-    0.70
+  return Number(
+    state.activity[todayKey()] || 0
   );
+
 }
 
 
-/* =========================================================
-   BILAN
-========================================================= */
+function getActivityCorrected(){
 
-function renderDeficit(){
+  return getActivityRaw() * 0.70;
 
-  const consumed=
-    getTodayMacros().kcal;
+}
 
 
-  const bmr=
+function renderActivity(){
+
+  const raw =
+    getActivityRaw();
+
+  const corrected =
+    getActivityCorrected();
+
+  document.getElementById(
+    "activityCalories"
+  ).value =
+    raw || "";
+
+  document.getElementById(
+    "activityRaw"
+  ).textContent =
+    `${round(raw)} kcal`;
+
+  document.getElementById(
+    "activityCorrected"
+  ).textContent =
+    `${round(corrected)} kcal`;
+
+}
+
+
+/* =====================================================
+   BALANCE ÉNERGÉTIQUE
+===================================================== */
+
+function calculateBalance(){
+
+  const consumed =
+    getTodayTotals().kcal;
+
+  const bmr =
     calculateBMR();
 
+  const activity =
+    getActivityCorrected();
 
-  const activity=
-    getCorrectedActivity();
+  const tef =
+    calculateTEF().total;
 
-
-  const tef=
-    getTEF();
-
-
-  const expenditure=
+  const expenditure =
     bmr +
     activity +
     tef;
 
-
-  const balance=
+  const balance =
     consumed -
     expenditure;
 
+  return {
 
-  const box=
-    document.getElementById(
-      "deficitBox"
-    );
+    consumed,
+    bmr,
+    activity,
+    tef,
+    expenditure,
+    balance
 
+  };
 
-  box.classList.remove(
-    "deficit",
-    "surplus"
-  );
-
-
-  if(balance<0){
-
-    box.classList.add(
-      "deficit"
-    );
-
-  }else if(balance>0){
-
-    box.classList.add(
-      "surplus"
-    );
-
-  }
-
-
-  document.getElementById(
-    "deficitValue"
-  ).textContent=
-    `${balance>0?"+":""}${Math.round(balance)} kcal`;
-
-
-  document.getElementById(
-    "deficitDetails"
-  ).textContent=
-    `Consommé : ${Math.round(consumed)} kcal • `+
-    `Dépense : ${Math.round(expenditure)} kcal `+
-    `(BMR ${Math.round(bmr)} + activité ${Math.round(activity)} + TEF ${Math.round(tef)})`;
 }
 
 
-/* =========================================================
+function renderBalance(){
+
+  const b =
+    calculateBalance();
+
+  document.getElementById(
+    "balanceConsumed"
+  ).textContent =
+    `${round(b.consumed)} kcal`;
+
+  document.getElementById(
+    "balanceBmr"
+  ).textContent =
+    `${round(b.bmr)} kcal`;
+
+  document.getElementById(
+    "balanceActivity"
+  ).textContent =
+    `${round(b.activity)} kcal`;
+
+  document.getElementById(
+    "balanceTef"
+  ).textContent =
+    `${round(b.tef)} kcal`;
+
+  const value =
+    document.getElementById(
+      "balanceValue"
+    );
+
+  const text =
+    document.getElementById(
+      "balanceText"
+    );
+
+  value.textContent =
+    `${b.balance > 0 ? "+" : ""}${round(b.balance)} kcal`;
+
+  value.className =
+    "balance-number " +
+    (
+      b.balance < -50
+        ? "deficit"
+        : b.balance > 50
+          ? "surplus"
+          : "neutral"
+    );
+
+  if(b.balance < -50){
+
+    text.textContent =
+      "Déficit énergétique";
+
+  }else if(b.balance > 50){
+
+    text.textContent =
+      "Surplus énergétique";
+
+  }else{
+
+    text.textContent =
+      "Équilibre énergétique";
+
+  }
+
+}
+
+
+/* =====================================================
    POIDS
-========================================================= */
+===================================================== */
 
-function renderWeight(){
+function saveWeight(){
 
-  document.getElementById(
-    "weightDate"
-  ).value=
-    today();
-
-
-  const box=
-    document.getElementById(
-      "weightHistory"
-    );
-
-
-  const weights=[
-    ...S.weights
-  ].sort(
-    (a,b)=>
-      a.date.localeCompare(b.date)
-  );
-
-
-  box.innerHTML="";
-
-
-  if(!weights.length){
-
-    box.innerHTML=
-      '<p class="muted">Aucune mesure.</p>';
-
-    drawWeightChart();
-
-    return;
-  }
-
-
-  weights
-    .slice()
-    .reverse()
-    .forEach((w)=>{
-
-      const div=
-        document.createElement("div");
-
-
-      div.className="meal-item";
-
-
-      div.innerHTML=`
-
-        <div>
-
-          <strong>
-            ${w.weight} kg
-          </strong>
-
-          <span class="muted">
-            ${w.date}
-          </span>
-
-        </div>
-
-
-        <button
-          class="danger"
-          onclick="deleteWeight('${w.date}')">
-
-          ✕
-
-        </button>
-
-      `;
-
-
-      box.appendChild(div);
-
-    });
-
-
-  drawWeightChart();
-}
-
-
-function addWeight(){
-
-  const date=
+  const date =
     document.getElementById(
       "weightDate"
     ).value;
 
-
-  const weight=
+  const value =
     Number(
       document.getElementById(
-        "weightInput"
+        "weightValue"
       ).value
     );
 
-
-  if(
-    !date ||
-    !Number.isFinite(weight) ||
-    weight<=0
-  ){
+  if(!date || value <= 0){
 
     alert(
-      "Vérifie la date et le poids."
+      "Entre une date et un poids valides."
     );
 
     return;
+
   }
 
-
-  S.weights=
-    S.weights.filter(
-      w=>w.date!==date
+  const existing =
+    state.weights.find(
+      w => w.date === date
     );
 
+  if(existing){
 
-  S.weights.push({
-    date,
-    weight
-  });
+    existing.weight =
+      value;
 
+  }else{
 
-  S.weights.sort(
-    (a,b)=>
+    state.weights.push({
+
+      date,
+      weight:value
+
+    });
+
+  }
+
+  state.weights.sort(
+    (a,b) =>
       a.date.localeCompare(b.date)
   );
 
-
-  S.profile.weight=weight;
-
-
-  save();
-
+  saveState();
   renderAll();
 
-
-  document.getElementById(
-    "weightInput"
-  ).value="";
 }
 
 
-function deleteWeight(date){
+function renderWeight(){
 
-  S.weights=
-    S.weights.filter(
-      w=>w.date!==date
+  const today =
+    todayKey();
+
+  const dateInput =
+    document.getElementById(
+      "weightDate"
     );
 
+  if(
+    dateInput &&
+    !dateInput.value
+  ){
 
-  save();
+    dateInput.value =
+      today;
 
-  renderAll();
+  }
+
+  const history =
+    document.getElementById(
+      "weightHistory"
+    );
+
+  if(!history) return;
+
+  if(!state.weights.length){
+
+    history.innerHTML =
+      `<div class="empty">
+        Aucun poids enregistré.
+      </div>`;
+
+  }else{
+
+    history.innerHTML =
+      [...state.weights]
+        .sort(
+          (a,b) =>
+            b.date.localeCompare(a.date)
+        )
+        .map(
+          item => `
+
+            <div
+              style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                padding:10px 0;
+                border-bottom:1px solid #eee;
+              "
+            >
+
+              <span>
+                ${escapeHtml(item.date)}
+              </span>
+
+              <strong>
+                ${round(item.weight,1)} kg
+              </strong>
+
+            </div>
+
+          `
+        )
+        .join("");
+
+  }
+
+  drawWeightChart();
+
 }
 
-
-/* =========================================================
-   GRAPHIQUE POIDS
-========================================================= */
 
 function drawWeightChart(){
 
-  const canvas=
+  const canvas =
     document.getElementById(
       "weightChart"
     );
 
+  if(!canvas) return;
 
-  const ctx=
+  const ctx =
     canvas.getContext("2d");
 
+  const width =
+    canvas.width;
 
-  const rect=
-    canvas.getBoundingClientRect();
-
-
-  const dpr=
-    window.devicePixelRatio || 1;
-
-
-  canvas.width=
-    rect.width*dpr;
-
-
-  canvas.height=
-    220*dpr;
-
-
-  ctx.scale(
-    dpr,
-    dpr
-  );
-
-
-  const width=
-    rect.width;
-
-
-  const height=220;
-
+  const height =
+    canvas.height;
 
   ctx.clearRect(
     0,
@@ -2868,733 +3518,632 @@ function drawWeightChart(){
     height
   );
 
+  if(!state.weights.length){
 
-  const weights=[
-    ...S.weights
-  ].sort(
-    (a,b)=>
-      a.date.localeCompare(b.date)
-  );
+    ctx.fillStyle =
+      "#6b7280";
 
-
-  if(weights.length<2){
-
-    ctx.fillStyle="#69727b";
-
-    ctx.font="13px sans-serif";
+    ctx.font =
+      "16px Arial";
 
     ctx.fillText(
-      "Ajoute au moins 2 mesures pour voir le graphique.",
-      10,
-      30
+      "Aucune donnée de poids",
+      30,
+      60
     );
 
     return;
+
   }
 
-
-  const values=
-    weights.map(
-      w=>Number(w.weight)
-    );
-
-
-  const min=
-    Math.min(...values)-1;
-
-
-  const max=
-    Math.max(...values)+1;
-
-
-  const left=35;
-  const right=10;
-  const top=15;
-  const bottom=30;
-
-
-  const graphWidth=
-    width-left-right;
-
-
-  const graphHeight=
-    height-top-bottom;
-
-
-  ctx.strokeStyle="#d9dee3";
-
-  ctx.lineWidth=1;
-
-
-  for(let i=0;i<5;i++){
-
-    const y=
-      top +
-      (
-        graphHeight *
-        i/4
+  const data =
+    [...state.weights]
+      .sort(
+        (a,b) =>
+          a.date.localeCompare(b.date)
       );
 
+  const padding = 50;
 
-    ctx.beginPath();
-
-    ctx.moveTo(
-      left,
-      y
+  const values =
+    data.map(
+      d => Number(d.weight)
     );
 
-    ctx.lineTo(
-      width-right,
-      y
-    );
+  let min =
+    Math.min(...values);
 
-    ctx.stroke();
+  let max =
+    Math.max(...values);
+
+  if(min === max){
+
+    min -= 1;
+    max += 1;
 
   }
 
+  const chartWidth =
+    width - padding*2;
+
+  const chartHeight =
+    height - padding*2;
+
+  /* axes */
+
+  ctx.strokeStyle =
+    "#d1d5db";
+
+  ctx.lineWidth = 1;
 
   ctx.beginPath();
 
+  ctx.moveTo(
+    padding,
+    padding
+  );
 
-  weights.forEach(
-    (w,i)=>{
+  ctx.lineTo(
+    padding,
+    height-padding
+  );
 
-      const x=
-        left +
+  ctx.lineTo(
+    width-padding,
+    height-padding
+  );
+
+  ctx.stroke();
+
+  /* courbe */
+
+  ctx.beginPath();
+
+  data.forEach(
+    (item,index) => {
+
+      const x =
+        padding +
         (
-          graphWidth *
-          i /
-          (weights.length-1)
+          data.length === 1
+            ? chartWidth/2
+            : index /
+              (data.length-1) *
+              chartWidth
         );
 
-
-      const y=
-        top +
-        graphHeight *
+      const y =
+        height-padding -
         (
-          1 -
-          (
-            Number(w.weight)-min
-          ) /
-          (max-min)
+          (item.weight-min) /
+          (max-min) *
+          chartHeight
         );
 
+      if(index === 0){
 
-      if(i===0){
-
-        ctx.moveTo(
-          x,
-          y
-        );
+        ctx.moveTo(x,y);
 
       }else{
 
-        ctx.lineTo(
-          x,
-          y
-        );
+        ctx.lineTo(x,y);
 
       }
 
     }
   );
 
+  ctx.strokeStyle =
+    "#2563eb";
 
-  ctx.strokeStyle="#17212b";
-
-  ctx.lineWidth=3;
+  ctx.lineWidth = 3;
 
   ctx.stroke();
 
+  /* points */
 
-  weights.forEach(
-    (w,i)=>{
+  data.forEach(
+    (item,index) => {
 
-      const x=
-        left +
+      const x =
+        padding +
         (
-          graphWidth *
-          i /
-          (weights.length-1)
+          data.length === 1
+            ? chartWidth/2
+            : index /
+              (data.length-1) *
+              chartWidth
         );
 
-
-      const y=
-        top +
-        graphHeight *
+      const y =
+        height-padding -
         (
-          1 -
-          (
-            Number(w.weight)-min
-          ) /
-          (max-min)
+          (item.weight-min) /
+          (max-min) *
+          chartHeight
         );
-
 
       ctx.beginPath();
 
       ctx.arc(
         x,
         y,
-        4,
+        5,
         0,
         Math.PI*2
       );
 
-
-      ctx.fillStyle="#17212b";
+      ctx.fillStyle =
+        "#2563eb";
 
       ctx.fill();
 
     }
   );
+
+  ctx.fillStyle =
+    "#374151";
+
+  ctx.font =
+    "12px Arial";
+
+  ctx.fillText(
+    `${round(max,1)} kg`,
+    5,
+    padding
+  );
+
+  ctx.fillText(
+    `${round(min,1)} kg`,
+    5,
+    height-padding
+  );
+
 }
 
 
-/* =========================================================
+/* =====================================================
    MODALES
-========================================================= */
+===================================================== */
 
-function openManualModal(){
+function openModal(id){
 
-  document.getElementById(
-    "manualModal"
-  ).classList.add("open");
+  document
+    .getElementById(id)
+    .classList.add("show");
+
 }
 
 
 function closeModal(id){
 
-  document.getElementById(
-    id
-  ).classList.remove("open");
+  document
+    .getElementById(id)
+    .classList.remove("show");
+
 }
 
 
-function openSearchModal(){
+/* =====================================================
+   OPEN FOOD FACTS
+===================================================== */
 
-  document.getElementById(
-    "searchModal"
-  ).classList.add("open");
-
+function openFoodSearch(){
 
   document.getElementById(
     "offSearchInput"
-  ).focus();
-}
-
-
-function scrollToFoods(){
+  ).value = "";
 
   document.getElementById(
-    "foodsSection"
-  ).scrollIntoView({
-    behavior:"smooth"
-  });
+    "offResults"
+  ).innerHTML = "";
+
+  openModal(
+    "foodSearchModal"
+  );
+
 }
 
 
-/* =========================================================
-   AJOUT MANUEL
-========================================================= */
+async function searchOpenFoodFacts(){
+
+  const query =
+    document.getElementById(
+      "offSearchInput"
+    ).value.trim();
+
+  const results =
+    document.getElementById(
+      "offResults"
+    );
+
+  if(!query){
+
+    alert(
+      "Entre le nom d'un produit."
+    );
+
+    return;
+
+  }
+
+  results.innerHTML =
+    `<div class="empty">
+      Recherche en cours...
+    </div>`;
+
+  try{
+
+    const url =
+      "https://world.openfoodfacts.org/cgi/search.pl" +
+      "?search_terms=" +
+      encodeURIComponent(query) +
+      "&search_simple=1" +
+      "&action=process" +
+      "&json=1" +
+      "&page_size=20";
+
+    const response =
+      await fetch(url);
+
+    if(!response.ok){
+      throw new Error("Erreur réseau");
+    }
+
+    const data =
+      await response.json();
+
+    const products =
+      Array.isArray(data.products)
+        ? data.products
+        : [];
+
+    if(!products.length){
+
+      results.innerHTML =
+        `<div class="empty">
+          Aucun produit trouvé.
+        </div>`;
+
+      return;
+
+    }
+
+    results.innerHTML =
+      products.map(
+        (product,index) => {
+
+          const name =
+            product.product_name ||
+            product.generic_name ||
+            "Produit sans nom";
+
+          const brand =
+            product.brands || "";
+
+          const kcal =
+            product.nutriments?.["energy-kcal_100g"];
+
+          const protein =
+            product.nutriments?.proteins_100g;
+
+          const carbs =
+            product.nutriments?.carbohydrates_100g;
+
+          const fat =
+            product.nutriments?.fat_100g;
+
+          return `
+
+            <div class="food-card">
+
+              <div class="food-title">
+                ${escapeHtml(name)}
+              </div>
+
+              ${
+                brand
+                  ? `<div class="food-info">
+                      ${escapeHtml(brand)}
+                    </div>`
+                  : ""
+              }
+
+              <div class="food-macros">
+
+                <span class="macro">
+                  ${kcal != null ? round(kcal) : "?"} kcal
+                </span>
+
+                <span class="macro">
+                  P ${protein != null ? round(protein) : "?"}g
+                </span>
+
+                <span class="macro">
+                  G ${carbs != null ? round(carbs) : "?"}g
+                </span>
+
+                <span class="macro">
+                  L ${fat != null ? round(fat) : "?"}g
+                </span>
+
+              </div>
+
+              <div class="actions">
+
+                <button
+                  class="btn"
+                  onclick="importOFFProduct(${index})">
+                  ➕ Ajouter à mes aliments
+                </button>
+
+              </div>
+
+            </div>
+
+          `;
+
+        }
+      ).join("");
+
+    window.lastOFFProducts =
+      products;
+
+  }catch(error){
+
+    console.error(error);
+
+    results.innerHTML =
+      `<div class="empty">
+        Impossible de contacter Open Food Facts.
+        Vérifie ta connexion internet.
+      </div>`;
+
+  }
+
+}
+
+
+function importOFFProduct(index){
+
+  const product =
+    window.lastOFFProducts?.[index];
+
+  if(!product) return;
+
+  const name =
+    product.product_name ||
+    product.generic_name ||
+    "Produit Open Food Facts";
+
+  const brand =
+    product.brands || "";
+
+  const kcal =
+    Number(
+      product.nutriments?.["energy-kcal_100g"] || 0
+    );
+
+  const protein =
+    Number(
+      product.nutriments?.proteins_100g || 0
+    );
+
+  const carbs =
+    Number(
+      product.nutriments?.carbohydrates_100g || 0
+    );
+
+  const fat =
+    Number(
+      product.nutriments?.fat_100g || 0
+    );
+
+  const food = {
+
+    name,
+
+    brand,
+
+    category:"Autres",
+
+    type:"100g",
+
+    kcal,
+
+    protein,
+
+    carbs,
+
+    fat,
+
+    source:"openfoodfacts"
+
+  };
+
+  const existing =
+    state.foods.find(
+      f =>
+        f.name === name &&
+        f.source === "openfoodfacts"
+    );
+
+  if(!existing){
+
+    state.foods.push(food);
+
+  }
+
+  saveState();
+
+  closeModal(
+    "foodSearchModal"
+  );
+
+  renderAll();
+
+  openQuantity(
+    encodeURIComponent(name)
+  );
+
+}
+
+
+/* =====================================================
+   CRÉATION MANUELLE
+===================================================== */
+
+function openManualFood(){
+
+  [
+    "manualName",
+    "manualBrand",
+    "manualKcal",
+    "manualProtein",
+    "manualCarbs",
+    "manualFat"
+  ].forEach(id => {
+
+    const element =
+      document.getElementById(id);
+
+    if(element){
+      element.value = "";
+    }
+
+  });
+
+  openModal(
+    "manualFoodModal"
+  );
+
+}
+
 
 function createManualFood(){
 
-  const name=
+  const name =
     document.getElementById(
       "manualName"
     ).value.trim();
 
+  const brand =
+    document.getElementById(
+      "manualBrand"
+    ).value.trim();
 
-  const cat=
+  const category =
     document.getElementById(
       "manualCategory"
     ).value;
 
-
-  const kcal=
+  const kcal =
     Number(
       document.getElementById(
         "manualKcal"
       ).value
     );
 
-
-  const p=
+  const protein =
     Number(
       document.getElementById(
         "manualProtein"
       ).value
     );
 
-
-  const c=
+  const carbs =
     Number(
       document.getElementById(
         "manualCarbs"
       ).value
     );
 
-
-  const f=
+  const fat =
     Number(
       document.getElementById(
         "manualFat"
       ).value
     );
 
+  if(!name){
 
-  if(
-    !name ||
-    !Number.isFinite(kcal) ||
-    !Number.isFinite(p) ||
-    !Number.isFinite(c) ||
-    !Number.isFinite(f)
-  ){
-
-    alert(
-      "Remplis correctement tous les champs."
-    );
+    alert("Entre un nom.");
 
     return;
+
   }
 
-
-  const exists=
-    S.foods.some(
-      x=>
-        x.name.toLowerCase()===
-        name.toLowerCase()
-    );
-
-
-  if(exists){
-
-    alert(
-      "Cet aliment existe déjà."
-    );
-
-    return;
-  }
-
-
-  S.foods.push({
+  const food = {
 
     name,
-    cat,
+
+    brand,
+
+    category,
 
     type:"100g",
 
     kcal,
-    p,
-    c,
-    f,
+
+    protein,
+
+    carbs,
+
+    fat,
 
     source:"manual"
 
-  });
+  };
 
+  state.foods.push(food);
 
-  save();
+  saveState();
 
   closeModal(
-    "manualModal"
+    "manualFoodModal"
   );
 
+  renderAll();
 
-  document.getElementById(
-    "manualName"
-  ).value="";
-
-
-  document.getElementById(
-    "manualKcal"
-  ).value="";
-
-
-  document.getElementById(
-    "manualProtein"
-  ).value="";
-
-
-  document.getElementById(
-    "manualCarbs"
-  ).value="";
-
-
-  document.getElementById(
-    "manualFat"
-  ).value="";
-
-
-  renderFoods();
 }
 
 
-/* =========================================================
-   OPEN FOOD FACTS
-========================================================= */
-
-async function searchOpenFoodFacts(){
-
-  const query=
-    document.getElementById(
-      "offSearchInput"
-    ).value.trim();
-
-
-  const box=
-    document.getElementById(
-      "offResults"
-    );
-
-
-  if(query.length<2){
-
-    box.innerHTML=
-      '<p class="muted">Écris au moins 2 caractères.</p>';
-
-    return;
-  }
-
-
-  box.innerHTML=
-    '<p class="muted">Recherche en cours...</p>';
-
-
-  try{
-
-    const url=
-      "https://world.openfoodfacts.org/cgi/search.pl"+
-      "?search_terms="+
-      encodeURIComponent(query)+
-      "&search_simple=1"+
-      "&action=process"+
-      "&json=1"+
-      "&page_size=20"+
-      "&lc=fr";
-
-
-    const response=
-      await fetch(url);
-
-
-    if(!response.ok){
-
-      throw new Error(
-        "Erreur réseau"
-      );
-    }
-
-
-    const data=
-      await response.json();
-
-
-    const products=
-      Array.isArray(data.products)
-        ? data.products
-        : [];
-
-
-    if(!products.length){
-
-      box.innerHTML=
-        `
-        <p class="muted">
-          Aucun produit trouvé.
-        </p>
-        `;
-
-      return;
-    }
-
-
-    box.innerHTML="";
-
-
-    products.forEach(product=>{
-
-      const name=
-        product.product_name_fr ||
-        product.product_name ||
-        "Produit sans nom";
-
-
-      const brand=
-        product.brands || "";
-
-
-      const n=
-        product.nutriments || {};
-
-
-      const kcal=
-        n["energy-kcal_100g"];
-
-
-      const protein=
-        n["proteins_100g"];
-
-
-      const carbs=
-        n["carbohydrates_100g"];
-
-
-      const fat=
-        n["fat_100g"];
-
-
-      const code=
-        product.code || "";
-
-
-      const div=
-        document.createElement("div");
-
-
-      div.className="result";
-
-
-      div.innerHTML=`
-
-        <strong>
-          ${escapeHTML(name)}
-        </strong>
-
-        <small>
-          ${escapeHTML(brand)}
-          ${brand && code ? " • " : ""}
-          ${code ? "Code : "+escapeHTML(code) : ""}
-          <br>
-          ${kcal!=null ? fmt(kcal)+" kcal" : "Calories inconnues"}
-          / 100 g
-          ${
-            protein!=null
-              ? " • P "+fmt(protein)+" g"
-              : ""
-          }
-          ${
-            carbs!=null
-              ? " • G "+fmt(carbs)+" g"
-              : ""
-          }
-          ${
-            fat!=null
-              ? " • L "+fmt(fat)+" g"
-              : ""
-          }
-        </small>
-
-        <button
-          class="secondary"
-          onclick='importOpenFoodFactsProduct(${JSON.stringify({
-            name:name,
-            brand:brand,
-            code:code,
-            kcal:kcal,
-            protein:protein,
-            carbs:carbs,
-            fat:fat
-          })})'>
-
-          + Ajouter à mes aliments
-
-        </button>
-
-      `;
-
-
-      box.appendChild(div);
-
-    });
-
-
-  }catch(error){
-
-    console.error(error);
-
-
-    box.innerHTML=
-      `
-      <p class="muted">
-        Impossible de contacter Open Food Facts.
-        Vérifie ta connexion internet.
-      </p>
-      `;
-
-  }
-}
-
-
-function importOpenFoodFactsProduct(product){
-
-  const name=
-    product.brand
-      ? `${product.name} — ${product.brand}`
-      : product.name;
-
-
-  const kcal=
-    Number(product.kcal);
-
-
-  const p=
-    Number(product.protein);
-
-
-  const c=
-    Number(product.carbs);
-
-
-  const f=
-    Number(product.fat);
-
-
-  if(
-    !Number.isFinite(kcal)
-    ||
-    !Number.isFinite(p)
-    ||
-    !Number.isFinite(c)
-    ||
-    !Number.isFinite(f)
-  ){
-
-    alert(
-      "Les informations nutritionnelles de ce produit sont incomplètes."
-    );
-
-    return;
-  }
-
-
-  const existing=
-    S.foods.find(
-      x=>
-        x.offCode &&
-        x.offCode===product.code
-    );
-
-
-  if(existing){
-
-    alert(
-      "Ce produit est déjà dans tes aliments."
-    );
-
-    return;
-  }
-
-
-  let finalName=name;
-
-
-  const nameExists=
-    S.foods.some(
-      x=>
-        x.name.toLowerCase()===
-        finalName.toLowerCase()
-    );
-
-
-  if(nameExists){
-
-    finalName=
-      `${name} (${product.code || "OFF"})`;
-  }
-
-
-  S.foods.push({
-
-    name:finalName,
-
-    cat:"Mes aliments",
-
-    type:"100g",
-
-    kcal:kcal,
-
-    p:p,
-
-    c:c,
-
-    f:f,
-
-    source:"openfoodfacts",
-
-    offCode:product.code || ""
-
-  });
-
-
-  save();
-
-  closeModal(
-    "searchModal"
-  );
-
-
-  renderFoods();
-
-
-  alert(
-    "Produit ajouté à tes aliments."
-  );
-}
-
-
-/* =========================================================
-   CODE-BARRES
-========================================================= */
-
-let scannerStream=null;
-let scannerRunning=false;
-let scannerDetector=null;
+/* =====================================================
+   SCANNER CODE-BARRES
+===================================================== */
+
+let scannerStream = null;
+let scannerTimer = null;
 
 
 async function openScanner(){
 
-  document.getElementById(
+  openModal(
     "scannerModal"
-  ).classList.add("open");
+  );
 
+  const video =
+    document.getElementById(
+      "scannerVideo"
+    );
 
-  const status=
+  const status =
     document.getElementById(
       "scannerStatus"
     );
 
+  if(!("BarcodeDetector" in window)){
 
-  status.textContent=
-    "Préparation de la caméra...";
-
-
-  if(
-    !("BarcodeDetector" in window)
-  ){
-
-    status.textContent=
-      "Le scan automatique n'est pas disponible sur ce navigateur. Entre le code-barres ci-dessous.";
+    status.textContent =
+      "Le scan automatique n'est pas disponible sur ce navigateur. Utilise Open Food Facts.";
 
     return;
-  }
 
+  }
 
   try{
 
-    scannerDetector=
-      new BarcodeDetector({
-        formats:[
-          "ean_13",
-          "ean_8",
-          "upc_a",
-          "upc_e"
-        ]
-      });
-
-
-    scannerStream=
+    scannerStream =
       await navigator.mediaDevices.getUserMedia({
 
         video:{
@@ -3607,274 +4156,412 @@ async function openScanner(){
 
       });
 
-
-    const video=
-      document.getElementById(
-        "scannerVideo"
-      );
-
-
-    video.srcObject=
+    video.srcObject =
       scannerStream;
 
+    const detector =
+      new BarcodeDetector({
 
-    await video.play();
+        formats:[
+          "ean_13",
+          "ean_8",
+          "upc_a",
+          "upc_e"
+        ]
 
+      });
 
-    scannerRunning=true;
+    status.textContent =
+      "Recherche du code-barres...";
 
+    scannerTimer =
+      setInterval(
+        async () => {
 
-    status.textContent=
-      "Place le code-barres devant la caméra.";
+          try{
 
+            const barcodes =
+              await detector.detect(video);
 
-    scanBarcodeLoop();
+            if(barcodes.length){
 
+              const code =
+                barcodes[0].rawValue;
 
-  }catch(error){
+              status.textContent =
+                `Code détecté : ${code}`;
 
-    console.error(error);
+              clearInterval(
+                scannerTimer
+              );
 
+              await lookupBarcode(
+                code
+              );
 
-    status.textContent=
-      "Impossible d'accéder à la caméra. Vérifie l'autorisation caméra ou entre le code-barres manuellement.";
+            }
 
-  }
-}
+          }catch(error){
 
+            console.error(error);
 
-async function scanBarcodeLoop(){
+          }
 
-  if(!scannerRunning)return;
-
-
-  const video=
-    document.getElementById(
-      "scannerVideo"
-    );
-
-
-  try{
-
-    const barcodes=
-      await scannerDetector.detect(video);
-
-
-    if(barcodes.length){
-
-      const code=
-        barcodes[0].rawValue;
-
-
-      scannerRunning=false;
-
-
-      document.getElementById(
-        "manualBarcode"
-      ).value=code;
-
-
-      await searchBarcode(code);
-
-
-      return;
-    }
+        },
+        500
+      );
 
   }catch(error){
 
     console.error(error);
+
+    status.textContent =
+      "Impossible d'utiliser la caméra. Vérifie l'autorisation caméra.";
+
   }
 
-
-  requestAnimationFrame(
-    scanBarcodeLoop
-  );
 }
 
 
 function closeScanner(){
 
-  scannerRunning=false;
+  if(scannerTimer){
 
+    clearInterval(
+      scannerTimer
+    );
+
+    scannerTimer = null;
+
+  }
 
   if(scannerStream){
 
     scannerStream
       .getTracks()
       .forEach(
-        track=>track.stop()
+        track => track.stop()
       );
 
+    scannerStream = null;
 
-    scannerStream=null;
   }
 
-
-  const video=
+  const video =
     document.getElementById(
       "scannerVideo"
     );
 
+  if(video){
 
-  video.srcObject=null;
+    video.srcObject = null;
 
+  }
 
   closeModal(
     "scannerModal"
   );
+
 }
 
 
-function searchBarcodeManually(){
-
-  const code=
-    document.getElementById(
-      "manualBarcode"
-    ).value.trim();
-
-
-  if(!code){
-
-    alert(
-      "Entre un code-barres."
-    );
-
-    return;
-  }
-
-
-  searchBarcode(code);
-}
-
-
-async function searchBarcode(code){
-
-  const status=
-    document.getElementById(
-      "scannerStatus"
-    );
-
-
-  status.textContent=
-    "Recherche du produit...";
-
+async function lookupBarcode(code){
 
   try{
 
-    const url=
-      "https://world.openfoodfacts.org/api/v2/product/"+
-      encodeURIComponent(code)+
-      "?fields=code,product_name,product_name_fr,brands,nutriments";
+    const url =
+      `https://world.openfoodfacts.org/api/v2/product/${encodeURIComponent(code)}?fields=product_name,brands,nutriments`;
 
-
-    const response=
+    const response =
       await fetch(url);
 
-
-    if(!response.ok){
-
-      throw new Error(
-        "Erreur réseau"
-      );
-    }
-
-
-    const data=
+    const data =
       await response.json();
 
-
     if(
-      data.status!==1 ||
-      !data.product
+      !data.product ||
+      data.status !== 1
     ){
 
-      status.textContent=
-        "Produit introuvable dans Open Food Facts.";
-
-
       alert(
-        "Produit introuvable dans Open Food Facts. Tu peux l'ajouter manuellement."
+        "Produit non trouvé dans Open Food Facts."
       );
 
       return;
+
     }
 
-
-    const product=
+    const product =
       data.product;
 
-
-    const n=
-      product.nutriments || {};
-
-
-    const kcal=
-      n["energy-kcal_100g"];
-
-
-    const p=
-      n["proteins_100g"];
-
-
-    const c=
-      n["carbohydrates_100g"];
-
-
-    const f=
-      n["fat_100g"];
-
-
-    const name=
-      product.product_name_fr ||
+    const name =
       product.product_name ||
-      "Produit sans nom";
+      "Produit scanné";
 
+    const food = {
 
-    const brand=
-      product.brands || "";
+      name,
 
+      brand:
+        product.brands || "",
 
-    importOpenFoodFactsProduct({
+      category:"Autres",
 
-      name:name,
+      type:"100g",
 
-      brand:brand,
+      kcal:
+        Number(
+          product.nutriments?.["energy-kcal_100g"] || 0
+        ),
 
-      code:code,
+      protein:
+        Number(
+          product.nutriments?.proteins_100g || 0
+        ),
 
-      kcal:kcal,
+      carbs:
+        Number(
+          product.nutriments?.carbohydrates_100g || 0
+        ),
 
-      protein:p,
+      fat:
+        Number(
+          product.nutriments?.fat_100g || 0
+        ),
 
-      carbs:c,
+      source:"openfoodfacts"
 
-      fat:f
+    };
 
-    });
+    const existing =
+      state.foods.find(
+        f =>
+          f.name === name &&
+          f.source === "openfoodfacts"
+      );
 
+    if(!existing){
+
+      state.foods.push(
+        food
+      );
+
+    }
+
+    saveState();
 
     closeScanner();
 
+    renderAll();
+
+    openQuantity(
+      encodeURIComponent(name)
+    );
 
   }catch(error){
 
     console.error(error);
 
-
-    status.textContent=
-      "Erreur pendant la recherche.";
-
-
     alert(
-      "Impossible de récupérer ce produit."
+      "Impossible de rechercher ce code-barres."
     );
+
   }
+
 }
 
 
-/* =========================================================
-   AFFICHAGE GLOBAL
-========================================================= */
+/* =====================================================
+   RECHERCHE MAGASINS
+===================================================== */
+
+function searchStores(){
+
+  const input =
+    document.getElementById(
+      "storeSearchInput"
+    );
+
+  const container =
+    document.getElementById(
+      "storeSearchResults"
+    );
+
+  const query =
+    input.value.trim();
+
+  if(!query){
+
+    alert(
+      "Entre le nom d'un aliment."
+    );
+
+    return;
+
+  }
+
+  const encoded =
+    encodeURIComponent(query);
+
+  container.innerHTML = `
+
+    <div class="store-card">
+
+      <div>
+
+        <strong>
+          🛒 Carrefour
+        </strong>
+
+        <small>
+          Recherche directe du produit
+        </small>
+
+      </div>
+
+      <button
+        class="btn"
+        onclick="openStore('carrefour')">
+        Rechercher
+      </button>
+
+    </div>
+
+
+    <div class="store-card">
+
+      <div>
+
+        <strong>
+          🛒 Auchan
+        </strong>
+
+        <small>
+          Le terme sera copié automatiquement
+        </small>
+
+      </div>
+
+      <button
+        class="btn"
+        onclick="openStore('auchan')">
+        Rechercher
+      </button>
+
+    </div>
+
+
+    <div class="store-card">
+
+      <div>
+
+        <strong>
+          🛒 E.Leclerc
+        </strong>
+
+        <small>
+          Recherche via Leclerc Drive
+        </small>
+
+      </div>
+
+      <button
+        class="btn"
+        onclick="openStore('leclerc')">
+        Rechercher
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+
+async function copyStoreQuery(query){
+
+  try{
+
+    await navigator.clipboard.writeText(
+      query
+    );
+
+  }catch(error){
+
+    console.log(
+      "Copie automatique indisponible",
+      error
+    );
+
+  }
+
+}
+
+
+function openStore(store){
+
+  const query =
+    document
+      .getElementById(
+        "storeSearchInput"
+      )
+      .value
+      .trim();
+
+  if(!query){
+
+    alert(
+      "Entre d'abord un aliment."
+    );
+
+    return;
+
+  }
+
+  if(store === "carrefour"){
+
+    window.open(
+      "https://www.carrefour.fr/s?q=" +
+      encodeURIComponent(query),
+      "_blank"
+    );
+
+    return;
+
+  }
+
+  if(store === "auchan"){
+
+    copyStoreQuery(query);
+
+    window.open(
+      "https://www.auchan.fr/",
+      "_blank"
+    );
+
+    return;
+
+  }
+
+  if(store === "leclerc"){
+
+    copyStoreQuery(query);
+
+    window.open(
+      "https://www.leclercdrive.fr/",
+      "_blank"
+    );
+
+    return;
+
+  }
+
+}
+
+
+/* =====================================================
+   RENDU GLOBAL
+===================================================== */
 
 function renderAll(){
 
@@ -3882,70 +4569,101 @@ function renderAll(){
 
   renderMeals();
 
-  renderMacros();
+  renderToday();
 
   renderTEF();
 
-  renderBMR();
+  renderProfile();
 
   renderActivity();
 
-  renderDeficit();
+  renderBalance();
 
   renderWeight();
+
 }
 
 
-/* =========================================================
+/* =====================================================
    INITIALISATION
-========================================================= */
+===================================================== */
 
 document.addEventListener(
   "DOMContentLoaded",
-  ()=>{
+  () => {
+
+    const savedTab =
+      localStorage.getItem(
+        "energyLedgerActiveTab"
+      );
+
+    if(
+      savedTab &&
+      document.getElementById(savedTab)
+    ){
+
+      showTab(savedTab);
+
+    }else{
+
+      showTab("tab-repas");
+
+    }
 
     renderAll();
+
+    const weightDate =
+      document.getElementById(
+        "weightDate"
+      );
+
+    if(weightDate && !weightDate.value){
+
+      weightDate.value =
+        todayKey();
+
+    }
 
   }
 );
 
 
-/* =========================================================
-   FERMETURE MODALE
-========================================================= */
+/* =====================================================
+   FERMETURE MODALE EN CLIQUANT À L'EXTÉRIEUR
+===================================================== */
 
-document.querySelectorAll(
-  ".modal"
-).forEach(modal=>{
+document
+  .querySelectorAll(".modal")
+  .forEach(modal => {
 
-  modal.addEventListener(
-    "click",
-    event=>{
+    modal.addEventListener(
+      "click",
+      event => {
 
-      if(
-        event.target===modal
-      ){
+        if(event.target === modal){
 
-        if(
-          modal.id==="scannerModal"
-        ){
+          if(
+            modal.id ===
+            "scannerModal"
+          ){
 
-          closeScanner();
+            closeScanner();
 
-        }else{
+          }else{
 
-          modal.classList.remove(
-            "open"
-          );
+            modal.classList.remove(
+              "show"
+            );
+
+          }
 
         }
 
       }
+    );
 
-    }
-  );
+  });
 
-});
 
 </script>
 
